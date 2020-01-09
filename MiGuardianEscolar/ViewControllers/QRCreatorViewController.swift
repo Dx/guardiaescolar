@@ -9,22 +9,29 @@
 import UIKit
 
 class QRCreatorViewController: UIViewController {
-
+    @IBOutlet weak var qrImage: UIImageView!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        let defaults = UserDefaults.standard
+        if let stringForQR = defaults.string(forKey: defaultsKeys.stringForQR) {
+            qrImage.image = generateQRCode(from: stringForQR)
+        }
     }
     
+    func generateQRCode(from string: String) -> UIImage? {
+        let data = string.data(using: String.Encoding.ascii)
 
-    /*
-    // MARK: - Navigation
+        if let filter = CIFilter(name: "CIQRCodeGenerator") {
+            filter.setValue(data, forKey: "inputMessage")
+            let transform = CGAffineTransform(scaleX: 7, y: 7)
 
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+            if let output = filter.outputImage?.transformed(by: transform) {
+                return UIImage(ciImage: output)
+            }
+        }
+
+        return nil
     }
-    */
-
 }

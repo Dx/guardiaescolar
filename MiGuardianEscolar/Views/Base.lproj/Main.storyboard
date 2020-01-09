@@ -23,7 +23,7 @@
             </objects>
             <point key="canvasLocation" x="-1455" y="289"/>
         </scene>
-        <!--Menu View Controller-->
+        <!--Menú principal-->
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController id="BYZ-38-t0r" customClass="MenuViewController" customModule="MiGuardianEscolar" customModuleProvider="target" sceneMemberID="viewController">
@@ -62,7 +62,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
-                    <navigationItem key="navigationItem" id="uJk-WG-1JV"/>
+                    <navigationItem key="navigationItem" title="Menú principal" id="uJk-WG-1JV"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
@@ -199,6 +199,9 @@
                         <viewLayoutGuide key="safeArea" id="Mq9-lP-CsK"/>
                     </view>
                     <navigationItem key="navigationItem" id="ugJ-q8-Kfx"/>
+                    <connections>
+                        <outlet property="qrImage" destination="r2O-Xf-aHe" id="s4E-KQ-iPU"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="JLG-vg-KPc" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

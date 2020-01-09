@@ -10,11 +10,13 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
-
-
-
+    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+        
+        // Variables de la aplicación
+        let defaults = UserDefaults.standard
+        defaults.set("A1B2C3D4", forKey: defaultsKeys.stringForQR)
+        
         return true
     }
 
@@ -35,3 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 }
 
+struct defaultsKeys {
+    static let stringForQR = "StringForQR"
+}
