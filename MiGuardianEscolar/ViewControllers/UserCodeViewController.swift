@@ -1,5 +1,5 @@
 //
-//  ViewController.swift
+//  UserCodeViewController.swift
 //  MiGuardianEscolar
 //
 //  Created by Dx on 09/01/20.
@@ -8,13 +8,11 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class UserCodeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
         // Do any additional setup after loading the view.
     }
-
-
 }
-

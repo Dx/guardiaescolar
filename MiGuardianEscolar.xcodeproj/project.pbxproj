@@ -9,21 +9,31 @@
 /* Begin PBXBuildFile section */
 		E159E85523C7729700E96812 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E85423C7729700E96812 /* AppDelegate.swift */; };
 		E159E85723C7729800E96812 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E85623C7729800E96812 /* SceneDelegate.swift */; };
-		E159E85923C7729800E96812 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E85823C7729800E96812 /* ViewController.swift */; };
+		E159E85923C7729800E96812 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E85823C7729800E96812 /* MenuViewController.swift */; };
 		E159E85C23C7729800E96812 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E159E85A23C7729800E96812 /* Main.storyboard */; };
 		E159E85E23C7729B00E96812 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E159E85D23C7729B00E96812 /* Assets.xcassets */; };
 		E159E86123C7729B00E96812 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E159E85F23C7729B00E96812 /* LaunchScreen.storyboard */; };
+		E159E86C23C7748400E96812 /* UserCodeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E86B23C7748400E96812 /* UserCodeViewController.swift */; };
+		E159E86E23C774B800E96812 /* NewNipViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E86D23C774B800E96812 /* NewNipViewController.swift */; };
+		E159E87023C775B800E96812 /* NipValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E86F23C775B800E96812 /* NipValidationViewController.swift */; };
+		E159E87223C7761100E96812 /* QRCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87123C7761100E96812 /* QRCreatorViewController.swift */; };
+		E159E87423C7764600E96812 /* PeopleRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87323C7764600E96812 /* PeopleRegistrationViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		E159E85123C7729700E96812 /* MiGuardianEscolar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiGuardianEscolar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E159E85423C7729700E96812 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E159E85623C7729800E96812 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		E159E85823C7729800E96812 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		E159E85823C7729800E96812 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		E159E85B23C7729800E96812 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		E159E85D23C7729B00E96812 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		E159E86023C7729B00E96812 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		E159E86223C7729B00E96812 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E159E86B23C7748400E96812 /* UserCodeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserCodeViewController.swift; sourceTree = "<group>"; };
+		E159E86D23C774B800E96812 /* NewNipViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewNipViewController.swift; sourceTree = "<group>"; };
+		E159E86F23C775B800E96812 /* NipValidationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NipValidationViewController.swift; sourceTree = "<group>"; };
+		E159E87123C7761100E96812 /* QRCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreatorViewController.swift; sourceTree = "<group>"; };
+		E159E87323C7764600E96812 /* PeopleRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRegistrationViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,15 +66,44 @@
 		E159E85323C7729700E96812 /* MiGuardianEscolar */ = {
 			isa = PBXGroup;
 			children = (
+				E159E86223C7729B00E96812 /* Info.plist */,
 				E159E85423C7729700E96812 /* AppDelegate.swift */,
 				E159E85623C7729800E96812 /* SceneDelegate.swift */,
-				E159E85823C7729800E96812 /* ViewController.swift */,
-				E159E85A23C7729800E96812 /* Main.storyboard */,
 				E159E85D23C7729B00E96812 /* Assets.xcassets */,
-				E159E85F23C7729B00E96812 /* LaunchScreen.storyboard */,
-				E159E86223C7729B00E96812 /* Info.plist */,
+				E159E86A23C773D800E96812 /* Views */,
+				E159E86823C773C000E96812 /* ViewControllers */,
+				E159E86923C773D000E96812 /* Models */,
 			);
 			path = MiGuardianEscolar;
+			sourceTree = "<group>";
+		};
+		E159E86823C773C000E96812 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				E159E85823C7729800E96812 /* MenuViewController.swift */,
+				E159E86B23C7748400E96812 /* UserCodeViewController.swift */,
+				E159E86D23C774B800E96812 /* NewNipViewController.swift */,
+				E159E86F23C775B800E96812 /* NipValidationViewController.swift */,
+				E159E87123C7761100E96812 /* QRCreatorViewController.swift */,
+				E159E87323C7764600E96812 /* PeopleRegistrationViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		E159E86923C773D000E96812 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		E159E86A23C773D800E96812 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E159E85A23C7729800E96812 /* Main.storyboard */,
+				E159E85F23C7729B00E96812 /* LaunchScreen.storyboard */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -138,7 +177,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E159E85923C7729800E96812 /* ViewController.swift in Sources */,
+				E159E87423C7764600E96812 /* PeopleRegistrationViewController.swift in Sources */,
+				E159E86C23C7748400E96812 /* UserCodeViewController.swift in Sources */,
+				E159E87023C775B800E96812 /* NipValidationViewController.swift in Sources */,
+				E159E86E23C774B800E96812 /* NewNipViewController.swift in Sources */,
+				E159E85923C7729800E96812 /* MenuViewController.swift in Sources */,
+				E159E87223C7761100E96812 /* QRCreatorViewController.swift in Sources */,
 				E159E85523C7729700E96812 /* AppDelegate.swift in Sources */,
 				E159E85723C7729800E96812 /* SceneDelegate.swift in Sources */,
 			);
