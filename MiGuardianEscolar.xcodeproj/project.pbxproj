@@ -22,6 +22,9 @@
 		E159E87623C7B54400E96812 /* ExtendTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87523C7B54400E96812 /* ExtendTextView.swift */; };
 		E159E87823C7BA4800E96812 /* SoapClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87723C7BA4800E96812 /* SoapClient.swift */; };
 		E16C962D23C7FBFE00EE16A5 /* SQLiteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16C962C23C7FBFE00EE16A5 /* SQLiteClient.swift */; };
+		E17D82E823C8E97C00A82823 /* DbHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17D82E723C8E97C00A82823 /* DbHelper.swift */; };
+		E17D82EA23C8EB1600A82823 /* DbHelperExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17D82E923C8EB1600A82823 /* DbHelperExt.swift */; };
+		E17D82ED23C8F95F00A82823 /* Empresa.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17D82EC23C8F95F00A82823 /* Empresa.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -44,6 +47,9 @@
 		E159E87523C7B54400E96812 /* ExtendTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendTextView.swift; sourceTree = "<group>"; };
 		E159E87723C7BA4800E96812 /* SoapClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoapClient.swift; sourceTree = "<group>"; };
 		E16C962C23C7FBFE00EE16A5 /* SQLiteClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteClient.swift; sourceTree = "<group>"; };
+		E17D82E723C8E97C00A82823 /* DbHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbHelper.swift; sourceTree = "<group>"; };
+		E17D82E923C8EB1600A82823 /* DbHelperExt.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DbHelperExt.swift; sourceTree = "<group>"; };
+		E17D82EC23C8F95F00A82823 /* Empresa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empresa.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -106,8 +112,11 @@
 		E159E86923C773D000E96812 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E17D82EB23C8F94C00A82823 /* Entities */,
 				E159E87723C7BA4800E96812 /* SoapClient.swift */,
 				E16C962C23C7FBFE00EE16A5 /* SQLiteClient.swift */,
+				E17D82E723C8E97C00A82823 /* DbHelper.swift */,
+				E17D82E923C8EB1600A82823 /* DbHelperExt.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -120,6 +129,14 @@
 				E159E87523C7B54400E96812 /* ExtendTextView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E17D82EB23C8F94C00A82823 /* Entities */ = {
+			isa = PBXGroup;
+			children = (
+				E17D82EC23C8F95F00A82823 /* Empresa.swift */,
+			);
+			path = Entities;
 			sourceTree = "<group>";
 		};
 		E9B8085EC99CC7E5D6CE7C50 /* Pods */ = {
@@ -241,8 +258,11 @@
 				E159E87623C7B54400E96812 /* ExtendTextView.swift in Sources */,
 				E159E86C23C7748400E96812 /* UserCodeViewController.swift in Sources */,
 				E159E87023C775B800E96812 /* NipValidationViewController.swift in Sources */,
+				E17D82ED23C8F95F00A82823 /* Empresa.swift in Sources */,
 				E159E86E23C774B800E96812 /* NewNipViewController.swift in Sources */,
+				E17D82EA23C8EB1600A82823 /* DbHelperExt.swift in Sources */,
 				E159E85923C7729800E96812 /* MenuViewController.swift in Sources */,
+				E17D82E823C8E97C00A82823 /* DbHelper.swift in Sources */,
 				E159E87223C7761100E96812 /* QRCreatorViewController.swift in Sources */,
 				E16C962D23C7FBFE00EE16A5 /* SQLiteClient.swift in Sources */,
 				E159E85523C7729700E96812 /* AppDelegate.swift in Sources */,

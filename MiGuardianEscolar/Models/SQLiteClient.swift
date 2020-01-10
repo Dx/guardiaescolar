@@ -7,53 +7,168 @@
 //
 
 import Foundation
-import SQLite
+import Squeal
 
 class SQLiteClient {
-    let db: Connection?
+    let db = Database()
     
-    init() throws {
-        db = try Connection("db/guardiaescolar.sqlite3")
+    func createTables() {
+        
+        createEmpresas()
+        createEntidades()
+        createAcercamientos()
+        createHorarios()
+        createCodigos()
     }
-
-    let empresa = Table("Empresa")
-    let idEmpresa = Expression<Int>("idEmpresa")
-    let nombre = Expression<String>("nombre")
-    let imagen = Expression<String?>("imagen")
-    let latitud = Expression<Float>("latitud")
-    let longitud = Expression<Float>("longitud")
-    let metros = Expression<Int>("metros")
-    let minutos = Expression<Int>("minutos")
     
-    let entidades = Table("Entidades")
-    let idEntidad = Expression<Int>("idEntidad")
-    let nombreEntidad = Expression<String>("nombre")
-    let foto = Expression<String?>("foto")
-
-    let acercamientos = Table("Acercamientos")
-    let nAcerca = Expression<Int>("nAcerca")
-    let fecha = Expression<String>("fecha")
+    func createEmpresas() {
+        do {
+            try db.createTable("Empresa", definitions: [
+                "idEmpresa INTEGER PRIMARY KEY",
+                "nombre TEXT",
+                "imagen TEXT",
+                "latitud REAL",
+                "longitud REAL",
+                "metros INTEGER",
+                "minutos INTEGER"
+            ], ifNotExists: true)
+        } catch {
+            print("Error \(error)")
+        }
+    }
     
-    let horarios = Table("Horarios")
-    let idHorario = Expression<Int>("idHorario")
-    let dias = Expression<String>("dias")
-    let hora = Expression<String>("hora")
+    func createEntidades() {
+        do {
+            try db.createTable("Entidades", definitions: [
+                "idEntidad INTEGER PRIMARY KEY",
+                "nombre TEXT",
+                "foto TEXT"
+            ], ifNotExists: true)
+        } catch {
+            print("Error \(error)")
+        }
+    }
     
-    let codigos = Table("Codigos")
-    let codigo = Expression<String>("codigo")
-    let pin = Expression<String>("pin")
+    func createAcercamientos() {
+        do {
+            try db.createTable("Acercamientos", definitions: [
+                "nAcerca INTEGER PRIMARY KEY",
+                "fecha TEXT"
+            ], ifNotExists: true)
+        } catch {
+            print("Error \(error)")
+        }
+    }
     
-    try db.run(empresa.create { t in
-        t.column(idEmpresa, primaryKey: true)
-        t.column(nombre)
-        t.column(imagen)
-        t.column(latitud)
-        t.column(longitud)
-        t.column(metros)
-        t.column(minutos)
-    })
-
-    let insert = users.insert(name <- "Alice", email <- "alice@mac.com")
-    let rowid = try db.run(insert)
+    func createHorarios() {
+        do {
+            try db.createTable("Horarios", definitions: [
+                "idHorario INTEGER PRIMARY KEY",
+                "dias TEXT",
+                "hora TEXT"
+            ], ifNotExists: true)
+        } catch {
+            print("Error \(error)")
+        }
+    }
+    
+    func createCodigos() {
+        do {
+            try db.createTable("Empresa", definitions: [
+                "codigo TEXT PRIMARY KEY",
+                "pin TEXT"
+            ], ifNotExists: true)
+        } catch {
+            print("Error \(error)")
+        }
+    }
+    
+    func addEmpresa(empresa: Empresa) {
+        do {
+            try db.insertInto(
+                "Empresa",
+                values: [
+                    "idEmpresa": empresa.idEmpresa,
+                    "nombre": empresa.nombre,
+                    "imagen": empresa.imagen,
+                    "latitud": empresa.latitud,
+                    "longitud": empresa.longitud,
+                    "metros": empresa.metros,
+                    "minutos": empresa.minutos
+                ]
+            )
+        } catch {
+            print("Error \(error)")
+        }
+    }
+    
+    func getEmpresas(empresa: Empresa) -> [Empresa]? {
+        do {
+            let empresas:[Empresa] = try db.selectFrom(
+                "Empresa",
+                whereExpr:"nombre IS NOT NULL",
+                block: Empresa.init
+            )
+            
+            return empresas
+            
+        } catch {
+            print("Error")
+            return nil
+        }
+    }
+    
+    func test() {
+        
+        let value1: Double = 12.12
+        let value2: Int = 3
+        
+        do {
+            let idEmpresa = try db.insertInto(
+                "Empresa",
+                values: [
+                    "idEmpresa": 3,
+                    "nombre": "Empresa 1",
+                    "imagen": "jkflasdf",
+                    "latitud": value1,
+                    "longitud": value1,
+                    "metros": value2,
+                    "minutos": value2
+                ]
+            )
+        } catch {
+            print("Error \(error)")
+        }
+        
+        do {
+            let idEmpresa = try db.insertInto(
+                "Empresa",
+                values: [
+                    "idEmpresa": 4,
+                    "nombre": "Empresa 2",
+                    "imagen": "jkflasdffs",
+                    "latitud": -12.12,
+                    "longitud": 13.93,
+                    "metros": 4,
+                    "minutos": 5
+                ]
+            )
+        } catch {
+            print("Error")
+        }
+        
+        do {
+            let empresas:[Empresa] = try db.selectFrom(
+                "Empresa",
+                whereExpr:"nombre IS NOT NULL",
+                block: Empresa.init
+            )
+            
+            print(empresas[0].nombre)
+            
+        } catch {
+            print("Error")
+        }
+    }
 }
 
