@@ -1,0 +1,6 @@
+module Pods_MiGuardianEscolar {
+  umbrella header "Pods-MiGuardianEscolar-umbrella.h"
+
+  export *
+  module * { export * }
+}

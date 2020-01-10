@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0587E41D129563AAB098EB75 /* libPods-MiGuardianEscolar.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6DAB8F4903AC2A2AD9859F21 /* libPods-MiGuardianEscolar.a */; };
 		E159E85523C7729700E96812 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E85423C7729700E96812 /* AppDelegate.swift */; };
 		E159E85723C7729800E96812 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E85623C7729800E96812 /* SceneDelegate.swift */; };
 		E159E85923C7729800E96812 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E85823C7729800E96812 /* MenuViewController.swift */; };
@@ -18,9 +19,15 @@
 		E159E87023C775B800E96812 /* NipValidationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E86F23C775B800E96812 /* NipValidationViewController.swift */; };
 		E159E87223C7761100E96812 /* QRCreatorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87123C7761100E96812 /* QRCreatorViewController.swift */; };
 		E159E87423C7764600E96812 /* PeopleRegistrationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87323C7764600E96812 /* PeopleRegistrationViewController.swift */; };
+		E159E87623C7B54400E96812 /* ExtendTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87523C7B54400E96812 /* ExtendTextView.swift */; };
+		E159E87823C7BA4800E96812 /* SoapClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E159E87723C7BA4800E96812 /* SoapClient.swift */; };
+		E16C962D23C7FBFE00EE16A5 /* SQLiteClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = E16C962C23C7FBFE00EE16A5 /* SQLiteClient.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1CAC3D0355A8895E5AD01FEF /* Pods-MiGuardianEscolar.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiGuardianEscolar.debug.xcconfig"; path = "Target Support Files/Pods-MiGuardianEscolar/Pods-MiGuardianEscolar.debug.xcconfig"; sourceTree = "<group>"; };
+		6DAB8F4903AC2A2AD9859F21 /* libPods-MiGuardianEscolar.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MiGuardianEscolar.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9CB2A68101B85C48826944B4 /* Pods-MiGuardianEscolar.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-MiGuardianEscolar.release.xcconfig"; path = "Target Support Files/Pods-MiGuardianEscolar/Pods-MiGuardianEscolar.release.xcconfig"; sourceTree = "<group>"; };
 		E159E85123C7729700E96812 /* MiGuardianEscolar.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiGuardianEscolar.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E159E85423C7729700E96812 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		E159E85623C7729800E96812 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -34,6 +41,9 @@
 		E159E86F23C775B800E96812 /* NipValidationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NipValidationViewController.swift; sourceTree = "<group>"; };
 		E159E87123C7761100E96812 /* QRCreatorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QRCreatorViewController.swift; sourceTree = "<group>"; };
 		E159E87323C7764600E96812 /* PeopleRegistrationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleRegistrationViewController.swift; sourceTree = "<group>"; };
+		E159E87523C7B54400E96812 /* ExtendTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExtendTextView.swift; sourceTree = "<group>"; };
+		E159E87723C7BA4800E96812 /* SoapClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoapClient.swift; sourceTree = "<group>"; };
+		E16C962C23C7FBFE00EE16A5 /* SQLiteClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SQLiteClient.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -41,6 +51,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0587E41D129563AAB098EB75 /* libPods-MiGuardianEscolar.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -52,6 +63,8 @@
 			children = (
 				E159E85323C7729700E96812 /* MiGuardianEscolar */,
 				E159E85223C7729700E96812 /* Products */,
+				E9B8085EC99CC7E5D6CE7C50 /* Pods */,
+				F9AC8EB9DF45E8358DFCE8E1 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -93,6 +106,8 @@
 		E159E86923C773D000E96812 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				E159E87723C7BA4800E96812 /* SoapClient.swift */,
+				E16C962C23C7FBFE00EE16A5 /* SQLiteClient.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -102,8 +117,26 @@
 			children = (
 				E159E85A23C7729800E96812 /* Main.storyboard */,
 				E159E85F23C7729B00E96812 /* LaunchScreen.storyboard */,
+				E159E87523C7B54400E96812 /* ExtendTextView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		E9B8085EC99CC7E5D6CE7C50 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				1CAC3D0355A8895E5AD01FEF /* Pods-MiGuardianEscolar.debug.xcconfig */,
+				9CB2A68101B85C48826944B4 /* Pods-MiGuardianEscolar.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		F9AC8EB9DF45E8358DFCE8E1 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				6DAB8F4903AC2A2AD9859F21 /* libPods-MiGuardianEscolar.a */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -113,6 +146,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = E159E86523C7729B00E96812 /* Build configuration list for PBXNativeTarget "MiGuardianEscolar" */;
 			buildPhases = (
+				B63F6C4650ACD0D2633ADDB8 /* [CP] Check Pods Manifest.lock */,
 				E159E84D23C7729700E96812 /* Sources */,
 				E159E84E23C7729700E96812 /* Frameworks */,
 				E159E84F23C7729700E96812 /* Resources */,
@@ -172,17 +206,45 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		B63F6C4650ACD0D2633ADDB8 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-MiGuardianEscolar-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		E159E84D23C7729700E96812 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				E159E87423C7764600E96812 /* PeopleRegistrationViewController.swift in Sources */,
+				E159E87823C7BA4800E96812 /* SoapClient.swift in Sources */,
+				E159E87623C7B54400E96812 /* ExtendTextView.swift in Sources */,
 				E159E86C23C7748400E96812 /* UserCodeViewController.swift in Sources */,
 				E159E87023C775B800E96812 /* NipValidationViewController.swift in Sources */,
 				E159E86E23C774B800E96812 /* NewNipViewController.swift in Sources */,
 				E159E85923C7729800E96812 /* MenuViewController.swift in Sources */,
 				E159E87223C7761100E96812 /* QRCreatorViewController.swift in Sources */,
+				E16C962D23C7FBFE00EE16A5 /* SQLiteClient.swift in Sources */,
 				E159E85523C7729700E96812 /* AppDelegate.swift in Sources */,
 				E159E85723C7729800E96812 /* SceneDelegate.swift in Sources */,
 			);
@@ -326,6 +388,7 @@
 		};
 		E159E86623C7729B00E96812 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CAC3D0355A8895E5AD01FEF /* Pods-MiGuardianEscolar.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
@@ -344,6 +407,7 @@
 		};
 		E159E86723C7729B00E96812 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9CB2A68101B85C48826944B4 /* Pods-MiGuardianEscolar.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;

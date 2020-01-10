@@ -39,4 +39,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 struct defaultsKeys {
     static let stringForQR = "StringForQR"
+    static let verificationCode = "VerificationCode"
+    static let nip = "Nip"
+}
+
+extension Notification.Name {
+    static let needsToValidateLogin = Notification.Name("needsToValidateLogin")
 }

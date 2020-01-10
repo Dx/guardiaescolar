@@ -1,0 +1,22 @@
+PODS:
+  - SQLite.swift (0.12.2):
+    - SQLite.swift/standard (= 0.12.2)
+  - SQLite.swift/standard (0.12.2)
+  - SWXMLHash (5.0.1)
+
+DEPENDENCIES:
+  - SQLite.swift (~> 0.12.0)
+  - SWXMLHash
+
+SPEC REPOS:
+  trunk:
+    - SQLite.swift
+    - SWXMLHash
+
+SPEC CHECKSUMS:
+  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
+  SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
+
+PODFILE CHECKSUM: eac37c684462968549debaf15c55bfb2d2daaa59
+
+COCOAPODS: 1.8.4

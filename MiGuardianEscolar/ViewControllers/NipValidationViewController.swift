@@ -10,21 +10,26 @@ import UIKit
 
 class NipValidationViewController: UIViewController {
 
+    @IBOutlet weak var loginNip: UITextField!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // Do any additional setup after loading the view.
+        self.loginNip.keyboardType = UIKeyboardType.numberPad
+        self.loginNip.becomeFirstResponder()
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func loginClick(_ sender: Any) {
+        
+        // Valida que el nip sea el mismo que el guardado
+        let defaults = UserDefaults.standard
+        if let storedNip = defaults.string(forKey: defaultsKeys.nip) {
+            if storedNip == loginNip.text {
+                dismiss(animated: true, completion: nil)
+            } else {
+                // Muestra alerta
+            }
+        }
+        
     }
-    */
-
 }
