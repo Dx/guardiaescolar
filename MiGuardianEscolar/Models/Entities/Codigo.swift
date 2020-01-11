@@ -10,8 +10,8 @@ import Foundation
 import Squeal
 
 struct Codigo {
-    let codigo:String
-    let pin:String
+    let codigo: String
+    let pin: String
     
     init(row: Statement) throws {
         codigo = row.stringValue("codigo") ?? ""

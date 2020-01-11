@@ -10,13 +10,13 @@ import Foundation
 import Squeal
 
 struct Empresa {
-    let idEmpresa:Int
-    let nombre:String
-    let imagen:String
-    let latitud:Double
-    let longitud:Double
-    let metros:Int
-    let minutos:Int
+    let idEmpresa: Int
+    let nombre: String
+    let imagen: String
+    let latitud: Double
+    let longitud: Double
+    let metros: Int
+    let minutos: Int
     
     
     

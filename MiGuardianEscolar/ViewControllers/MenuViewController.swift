@@ -10,30 +10,72 @@ import UIKit
 
 class MenuViewController: UIViewController {
 
+    let defaults = UserDefaults.standard
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(validateLogin), name: .needsToValidateLogin, object: nil)
         
         validateLogin()
+        
+        // Si ya está login, toma Empresa y Horarios del webservice para escribirlos en BD
+        
+        let loggedIn = defaults.bool(forKey: defaultsKeys.loggedIn)
+        if loggedIn {
+            bringNewValuesFromWS()
+        }
+        
     }
     
     @objc func validateLogin() {
         // Valida si ya tiene código de verificación
-        let defaults = UserDefaults.standard
+        
+        defaults.set(false, forKey: defaultsKeys.loggedIn)
+        
         if let verificationCode = defaults.string(forKey: defaultsKeys.verificationCode) {
             print("Este es el código que ya se tiene: \(verificationCode)")
-            if let nip = defaults.string(forKey: defaultsKeys.nip) {
-                print("Este es el nip: \(nip)")
+            if defaults.string(forKey: defaultsKeys.nip) != nil {
                 
-                performSegue(withIdentifier: "validateNIP", sender: self)
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "validateNIP", sender: self)
+                }
             } else {
-                performSegue(withIdentifier: "askNewNIP", sender: self)
+                DispatchQueue.main.async {
+                    self.performSegue(withIdentifier: "askNewNIP", sender: self)
+                }
             }
         } else {
             // Si no lo tiene todavía se solicita
-            performSegue(withIdentifier: "showVerificationCode", sender: self)
+            DispatchQueue.main.async {
+                self.performSegue(withIdentifier: "showVerificationCode", sender: self)
+            }
         }
+    }
+    
+    func bringNewValuesFromWS() {
+        let clientSOAP = SoapClient()
+        let clientSQL = SQLiteClient()
+        
+        
+        // Obtiene la empresa del WS
+        clientSOAP.getEmpresa(idEmpresa: defaults.integer(forKey: defaultsKeys.empresa), completion: {(empresa: Empresa?, error: String?) in
+            if empresa != nil {
+                //Guarda el IdEmpresa en la BD
+                clientSQL.addEmpresa(empresa: empresa!)
+            }
+        })
+        
+        // Obtiene los horarios del WS
+        clientSOAP.getHorarios(code: "1", completion: {(result: [Horario]?, error: String?) in
+            
+            if result != nil {
+                // Los agrega a la BD
+                for horario in result! {
+                    clientSQL.addHorario(horario: horario)
+                }
+            }
+        })
     }
 }
 

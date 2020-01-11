@@ -37,15 +37,7 @@ class UserCodeViewController: UIViewController {
                     defaults.set(code, forKey: defaultsKeys.verificationCode)
                     
                     // Guarda codigo en BD
-                    clientSQL.addCodigo(codigo: code)
-                    
-                    // Obtiene la empresa del WS
-                    clientSOAP.getEmpresa(idEmpresa: 1, completion: {(empresa: Empresa?, error: String?) in
-                        if empresa != nil {
-                            //Guarda el IdEmpresa en la BD
-                            clientSQL.addEmpresa(empresa: empresa!)
-                        }
-                    })
+                    clientSQL.addCodigo(codigo: code, nip: "")
                     
                     //Cierra la ventana actual y avisa al Menu que valide login
                     DispatchQueue.main.async {

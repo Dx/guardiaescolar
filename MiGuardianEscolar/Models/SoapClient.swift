@@ -10,6 +10,7 @@ import Foundation
 import SWXMLHash
 
 class SoapClient {
+    
     func sendCode(code: String, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
         let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:validaIOS><hs:codigo>\(code)</hs:codigo></hs:validaIOS></soapenv:Body></soapenv:Envelope>"
         let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
@@ -88,6 +89,40 @@ class SoapClient {
                 print("Error: " + error.debugDescription)
             }
 
+        })
+        task.resume()
+    }
+    
+    func getHorarios(code: String, completion:@escaping (_ result: [Horario]?, _ error: String?) -> Void) {
+        // Método dameTablaHorariosIOS
+        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:dameTablaHorariosIOS><hs:codigo>\(code)</hs:codigo></hs:dameTablaHorariosIOS></soapenv:Body></soapenv:Envelope>"
+        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
+
+        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let session = URLSession.shared
+
+        lobj_Request.httpMethod = "POST"
+        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
+        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+            
+            let xml = SWXMLHash.config {
+                config in
+                config.shouldProcessLazily = true
+            }.parse(data!)
+            
+            var horarios = [Horario]()
+            
+            for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaHorariosIOS"]["return"]["item"].all {
+                
+                let dias = item["dias"].element!.text
+                let hora = item["hora"].element!.text
+                if let idHorario = Int(item["nHorario"].element!.text) {
+                    let horario = Horario(idHorario: idHorario, dias: dias, hora: hora)
+                    horarios.append(horario)
+                }
+            }
         })
         task.resume()
     }

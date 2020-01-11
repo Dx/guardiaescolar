@@ -11,6 +11,22 @@ import Squeal
 
 class SQLiteClient {
     
+    let db: Database?
+    
+    init(){
+        do {
+            let dbPath: String = "MiGuardianEscolar.sqlite"
+            let fileURL = try! FileManager.default.url(for: .documentDirectory, in: .userDomainMask, appropriateFor: nil, create: false)
+            .appendingPathComponent(dbPath)
+            
+            db = try Database.init(path: fileURL.path)
+        } catch {
+            print("Error \(error)")
+            db = nil
+        }
+    }
+    
+    
     
     func createTables() {
         
@@ -23,7 +39,7 @@ class SQLiteClient {
     
     func createEmpresas() {
         do {
-            try globalVariables.db!.createTable("Empresa", definitions: [
+            try db!.createTable("Empresa", definitions: [
                 "idEmpresa INTEGER PRIMARY KEY",
                 "nombre TEXT",
                 "imagen TEXT",
@@ -39,7 +55,7 @@ class SQLiteClient {
     
     func createEntidades() {
         do {
-            try globalVariables.db!.createTable("Entidades", definitions: [
+            try db?.createTable("Entidades", definitions: [
                 "idEntidad INTEGER PRIMARY KEY",
                 "nombre TEXT",
                 "foto TEXT"
@@ -51,7 +67,7 @@ class SQLiteClient {
     
     func createAcercamientos() {
         do {
-            try globalVariables.db!.createTable("Acercamientos", definitions: [
+            try db?.createTable("Acercamientos", definitions: [
                 "nAcerca INTEGER PRIMARY KEY",
                 "fecha TEXT"
             ], ifNotExists: true)
@@ -62,7 +78,7 @@ class SQLiteClient {
     
     func createHorarios() {
         do {
-            try globalVariables.db!.createTable("Horarios", definitions: [
+            try db?.createTable("Horarios", definitions: [
                 "idHorario INTEGER PRIMARY KEY",
                 "dias TEXT",
                 "hora TEXT"
@@ -74,7 +90,7 @@ class SQLiteClient {
     
     func createCodigos() {
         do {
-            try globalVariables.db!.createTable("Codigos", definitions: [
+            try db?.createTable("Codigos", definitions: [
                 "codigo TEXT PRIMARY KEY",
                 "pin TEXT"
             ], ifNotExists: true)
@@ -88,7 +104,7 @@ class SQLiteClient {
         if let empresas = self.getEmpresa(idEmpresa: empresa.idEmpresa) {
             if empresas.count > 0 {
                 do {
-                    try globalVariables.db!.update("Empresa", set: [
+                    try db?.update("Empresa", set: [
                         "idEmpresa": empresa.idEmpresa,
                         "nombre": empresa.nombre,
                         "imagen": empresa.imagen,
@@ -103,7 +119,7 @@ class SQLiteClient {
                 }
             } else {
                 do {
-                    try globalVariables.db!.insertInto(
+                    try db?.insertInto(
                         "Empresa",
                         values: [
                             "idEmpresa": empresa.idEmpresa,
@@ -120,13 +136,11 @@ class SQLiteClient {
                 }
             }
         }
-        
-        
     }
     
     func getEmpresa(idEmpresa: Int) -> [Empresa]? {
         do {
-            let empresas:[Empresa] = try globalVariables.db!.selectFrom(
+            let empresas:[Empresa] = try db!.selectFrom(
                 "Empresa",
                 whereExpr:"idEmpresa = '\(idEmpresa)'",
                 block: Empresa.init
@@ -142,7 +156,7 @@ class SQLiteClient {
     
     func getAllEmpresas(empresa: Empresa) -> [Empresa]? {
         do {
-            let empresas:[Empresa] = try globalVariables.db!.selectFrom(
+            let empresas:[Empresa] = try db!.selectFrom(
                 "Empresa",
                 whereExpr:"nombre IS NOT NULL",
                 block: Empresa.init
@@ -156,14 +170,14 @@ class SQLiteClient {
         }
     }
     
-    func addCodigo(codigo: String) {
+    func addCodigo(codigo: String, nip: String) {
         
         if let codigos = self.getCodigo(codigo: codigo) {
             if codigos.count > 0 {
                 do {
-                    try globalVariables.db!.update("Codigos", set: [
+                    try db!.update("Codigos", set: [
                         "codigo": codigo,
-                        "pin": ""
+                        "pin": nip
                     ],
                     whereExpr:"codigo = '\(codigo)'")
                 } catch {
@@ -171,9 +185,9 @@ class SQLiteClient {
                 }
             } else {
                 do {
-                    try globalVariables.db!.insertInto("Codigos", values: [
+                    try db!.insertInto("Codigos", values: [
                         "codigo": codigo,
-                        "pin": ""
+                        "pin": nip
                     ])
                 } catch {
                     print("Error \(error)")
@@ -184,7 +198,7 @@ class SQLiteClient {
     
     func getCodigo(codigo: String) -> [Codigo]? {
         do {
-            let codigos:[Codigo] = try globalVariables.db!.selectFrom(
+            let codigos:[Codigo] = try db!.selectFrom(
                 "Codigos",
                 whereExpr:"codigo = '\(codigo)'",
                 block: Codigo.init
@@ -197,13 +211,60 @@ class SQLiteClient {
         }
     }
     
+    func addHorario(horario: Horario) {
+        
+        if let horarios = self.getHorario(idHorario: horario.idHorario) {
+            if horarios.count > 0 {
+                do {
+                    try db?.update("Horarios", set: [
+                        "idHorario": horario.idHorario,
+                        "dias": horario.dias,
+                        "hora": horario.hora
+                    ],
+                    whereExpr:"idHorario = '\(horario.idHorario)'")
+                } catch {
+                    print("Error \(error)")
+                }
+            } else {
+                do {
+                    try db?.insertInto(
+                        "Horarios",
+                        values: [
+                            "idHorario": horario.idHorario,
+                            "dias": horario.dias,
+                            "hora": horario.hora
+                        ]
+                    )
+                } catch {
+                    print("Error \(error)")
+                }
+            }
+        }
+    }
+    
+    func getHorario(idHorario: Int) -> [Horario]? {
+        do {
+            let horarios:[Horario] = try db!.selectFrom(
+                "Horarios",
+                whereExpr:"idHorario = '\(idHorario)'",
+                block: Horario.init
+            )
+            
+            return horarios
+            
+        } catch {
+            print("Error \(error)")
+            return nil
+        }
+    }
+    
     func test() {
         
         let value1: Double = 12.12
         let value2: Int = 3
         
         do {
-            try globalVariables.db!.insertInto(
+            try db!.insertInto(
                 "Empresa",
                 values: [
                     "idEmpresa": 3,
@@ -220,7 +281,7 @@ class SQLiteClient {
         }
         
         do {
-            let idEmpresa = try globalVariables.db!.insertInto(
+            try db!.insertInto(
                 "Empresa",
                 values: [
                     "idEmpresa": 4,
@@ -237,7 +298,7 @@ class SQLiteClient {
         }
         
         do {
-            let empresas:[Empresa] = try globalVariables.db!.selectFrom(
+            let empresas:[Empresa] = try db!.selectFrom(
                 "Empresa",
                 whereExpr:"nombre IS NOT NULL",
                 block: Empresa.init

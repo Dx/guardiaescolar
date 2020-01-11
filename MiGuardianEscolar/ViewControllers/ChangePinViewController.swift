@@ -1,21 +1,20 @@
 //
-//  NewNipViewController.swift
+//  ChangePinViewController.swift
 //  MiGuardianEscolar
 //
-//  Created by Dx on 09/01/20.
+//  Created by Dx on 10/01/20.
 //  Copyright © 2020 heimtek. All rights reserved.
 //
 
 import UIKit
 
-class NewNipViewController: UIViewController {
-
+class ChangePinViewController: UIViewController {
     @IBOutlet weak var firstNip: UITextField!
     @IBOutlet weak var secondNip: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         self.firstNip.keyboardType = UIKeyboardType.numberPad
         self.secondNip.keyboardType = UIKeyboardType.numberPad
         
@@ -39,8 +38,7 @@ class NewNipViewController: UIViewController {
                 clientSQL.addCodigo(codigo: defaults.string(forKey: defaultsKeys.verificationCode)!, nip: nip)
                 
                 // Regresa al menú para validar login
-                self.dismiss(animated: true, completion: nil)
-                NotificationCenter.default.post(name: .needsToValidateLogin, object: nil)
+                self.navigationController?.popViewController(animated: true)
             }
         }
     }

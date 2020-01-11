@@ -27,6 +27,8 @@
 		E17D82ED23C8F95F00A82823 /* Empresa.swift in Sources */ = {isa = PBXBuildFile; fileRef = E17D82EC23C8F95F00A82823 /* Empresa.swift */; };
 		E1A8E03523C921C00004FB78 /* Codigo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03423C921C00004FB78 /* Codigo.swift */; };
 		E1A8E03723C94CE10004FB78 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03623C94CE10004FB78 /* Tools.swift */; };
+		E1A8E03923C9587A0004FB78 /* Horario.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03823C9587A0004FB78 /* Horario.swift */; };
+		E1A8E03B23C966C00004FB78 /* ChangePinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03A23C966C00004FB78 /* ChangePinViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +56,8 @@
 		E17D82EC23C8F95F00A82823 /* Empresa.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Empresa.swift; sourceTree = "<group>"; };
 		E1A8E03423C921C00004FB78 /* Codigo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Codigo.swift; sourceTree = "<group>"; };
 		E1A8E03623C94CE10004FB78 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
+		E1A8E03823C9587A0004FB78 /* Horario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Horario.swift; sourceTree = "<group>"; };
+		E1A8E03A23C966C00004FB78 /* ChangePinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +114,7 @@
 				E159E86F23C775B800E96812 /* NipValidationViewController.swift */,
 				E159E87123C7761100E96812 /* QRCreatorViewController.swift */,
 				E159E87323C7764600E96812 /* PeopleRegistrationViewController.swift */,
+				E1A8E03A23C966C00004FB78 /* ChangePinViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -141,6 +146,7 @@
 			children = (
 				E17D82EC23C8F95F00A82823 /* Empresa.swift */,
 				E1A8E03423C921C00004FB78 /* Codigo.swift */,
+				E1A8E03823C9587A0004FB78 /* Horario.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -261,6 +267,7 @@
 			files = (
 				E159E87423C7764600E96812 /* PeopleRegistrationViewController.swift in Sources */,
 				E159E87823C7BA4800E96812 /* SoapClient.swift in Sources */,
+				E1A8E03B23C966C00004FB78 /* ChangePinViewController.swift in Sources */,
 				E159E87623C7B54400E96812 /* ExtendTextView.swift in Sources */,
 				E159E86C23C7748400E96812 /* UserCodeViewController.swift in Sources */,
 				E159E87023C775B800E96812 /* NipValidationViewController.swift in Sources */,
@@ -270,6 +277,7 @@
 				E159E86E23C774B800E96812 /* NewNipViewController.swift in Sources */,
 				E17D82EA23C8EB1600A82823 /* DbHelperExt.swift in Sources */,
 				E159E85923C7729800E96812 /* MenuViewController.swift in Sources */,
+				E1A8E03923C9587A0004FB78 /* Horario.swift in Sources */,
 				E17D82E823C8E97C00A82823 /* DbHelper.swift in Sources */,
 				E159E87223C7761100E96812 /* QRCreatorViewController.swift in Sources */,
 				E16C962D23C7FBFE00EE16A5 /* SQLiteClient.swift in Sources */,
