@@ -11,8 +11,8 @@ import Squeal
 
 struct Horario {
     let idHorario: Int
-    let dias: String
-    let hora: String
+    let dias: String // 12345
+    let hora: String // 17:25
     
     init(row: Statement) throws {
         idHorario = row.intValue("idHorario") ?? 0

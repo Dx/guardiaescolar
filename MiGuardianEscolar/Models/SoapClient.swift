@@ -66,29 +66,20 @@ class SoapClient {
                 config.shouldProcessLazily = true
             }.parse(data!)
             
-            if response != nil {
+            for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaEmpresaIOSResponse"]["return"]["item"].all {
                 
-                print(response)
-                let idEmpresa = 54
-                let nombre = "nombre empresa"
-                let imagen = "imagen empresa"
-                let latitud: Double = 0
-                let longitud: Double = 0
-                let metros: Int = 0
-                let minutos: Int = 0
+                print(item)
+                let idEmpresa = Int(item["nEmp"].element!.text)!
+                let nombre = item["nombre"].element!.text
+                let imagen = item["imagen"].element!.text
+                let latitud = Double(item["latitud"].element!.text)!
+                let longitud = Double(item["longitud"].element!.text)!
+                let metros = Int(item["metros"].element!.text)!
+                let minutos = Int(item["minutos"].element!.text)!
                 let empresa = Empresa(idEmpresa: idEmpresa, nombre: nombre, imagen: imagen, latitud: latitud, longitud: longitud, metros: metros, minutos: minutos)
                 
                 completion(empresa, nil)
-            } else {
-                completion(nil, "Empresa no encontrada")
             }
-            
-            if error != nil
-            {
-                completion(nil, "Error en conexión")
-                print("Error: " + error.debugDescription)
-            }
-
         })
         task.resume()
     }
@@ -111,11 +102,11 @@ class SoapClient {
                 config in
                 config.shouldProcessLazily = true
             }.parse(data!)
-            
+
             var horarios = [Horario]()
-            
-            for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaHorariosIOS"]["return"]["item"].all {
-                
+
+            for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaHorariosIOSResponse"]["return"]["item"].all {
+
                 let dias = item["dias"].element!.text
                 let hora = item["hora"].element!.text
                 if let idHorario = Int(item["nHorario"].element!.text) {
@@ -123,6 +114,8 @@ class SoapClient {
                     horarios.append(horario)
                 }
             }
+            
+            completion(horarios, nil)
         })
         task.resume()
     }

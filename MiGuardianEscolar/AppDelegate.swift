@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Variables de la aplicación
         let defaults = UserDefaults.standard
         defaults.set("A1B2C3D4", forKey: defaultsKeys.stringForQR)
+        defaults.set(1, forKey: defaultsKeys.empresa)
         
         let client = SQLiteClient()
         client.createTables()

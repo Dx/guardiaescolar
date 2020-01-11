@@ -27,8 +27,12 @@ class NipValidationViewController: UIViewController {
         let clientSQL = SQLiteClient()
         if let empresa = clientSQL.getEmpresa(idEmpresa: idEmpresa) {
             let tools = Tools()
-//            image.image = tools.base64ToImage(empresa[0].imagen)
+            image.image = tools.base64ToImage(empresa[0].imagen)
         }
+        
+        self.image.layer.cornerRadius = 5
+        self.image.layer.borderWidth = 3.0
+        self.image.layer.borderColor = UIColor(red: 0.3, green: 0.8039, blue: 0.9843, alpha: 1).cgColor
     }
     
     @IBAction func loginClick(_ sender: Any) {
@@ -39,6 +43,7 @@ class NipValidationViewController: UIViewController {
             if storedNip == loginNip.text {
                 dismiss(animated: true, completion: nil)
                 defaults.set(true, forKey: defaultsKeys.loggedIn)
+                NotificationCenter.default.post(name: .needsToValidateLogin, object: nil)
             } else {
                 // Muestra alerta
             }

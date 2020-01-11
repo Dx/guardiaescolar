@@ -17,38 +17,35 @@ class MenuViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(validateLogin), name: .needsToValidateLogin, object: nil)
         
+        defaults.set(false, forKey: defaultsKeys.loggedIn)
+        
         validateLogin()
-        
-        // Si ya está login, toma Empresa y Horarios del webservice para escribirlos en BD
-        
-        let loggedIn = defaults.bool(forKey: defaultsKeys.loggedIn)
-        if loggedIn {
-            bringNewValuesFromWS()
-        }
-        
     }
     
     @objc func validateLogin() {
+        
         // Valida si ya tiene código de verificación
-        
-        defaults.set(false, forKey: defaultsKeys.loggedIn)
-        
-        if let verificationCode = defaults.string(forKey: defaultsKeys.verificationCode) {
-            print("Este es el código que ya se tiene: \(verificationCode)")
-            if defaults.string(forKey: defaultsKeys.nip) != nil {
-                
-                DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "validateNIP", sender: self)
+        let loggedIn = defaults.bool(forKey: defaultsKeys.loggedIn)
+        if loggedIn {
+            bringNewValuesFromWS()
+        } else {
+            if let verificationCode = defaults.string(forKey: defaultsKeys.verificationCode) {
+                print("Este es el código que ya se tiene: \(verificationCode)")
+                if defaults.string(forKey: defaultsKeys.nip) != nil {
+                    
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "validateNIP", sender: self)
+                    }
+                } else {
+                    DispatchQueue.main.async {
+                        self.performSegue(withIdentifier: "askNewNIP", sender: self)
+                    }
                 }
             } else {
+                // Si no lo tiene todavía se solicita
                 DispatchQueue.main.async {
-                    self.performSegue(withIdentifier: "askNewNIP", sender: self)
+                    self.performSegue(withIdentifier: "showVerificationCode", sender: self)
                 }
-            }
-        } else {
-            // Si no lo tiene todavía se solicita
-            DispatchQueue.main.async {
-                self.performSegue(withIdentifier: "showVerificationCode", sender: self)
             }
         }
     }
