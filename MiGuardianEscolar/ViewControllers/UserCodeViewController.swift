@@ -20,24 +20,37 @@ class UserCodeViewController: UIViewController {
     }
     
     @IBAction func validateClick(_ sender: Any) {
+        let clientSOAP = SoapClient()
+        let clientSQL = SQLiteClient()
         
         labelError.isHidden = true
         
         if validations() {
-            
             //Revisa si es un código válido contra el web service
-            let client = SoapClient()
-            client.sendCode(code: verificationCode.text!, completion: {(result: String?, error: String?) in
+            
+            let code = verificationCode.text!
+            
+            clientSOAP.sendCode(code: code, completion: {(result: String?, error: String?) in
                 if result != nil {
                     // Registra el código
                     let defaults = UserDefaults.standard
-                    defaults.set(self.verificationCode.text, forKey: defaultsKeys.verificationCode)
+                    defaults.set(code, forKey: defaultsKeys.verificationCode)
                     
-                    //Guarda el IdEmpresa en la BD
-                    //TODO
+                    // Guarda codigo en BD
+                    clientSQL.addCodigo(codigo: code)
+                    
+                    // Obtiene la empresa del WS
+                    clientSOAP.getEmpresa(idEmpresa: 1, completion: {(empresa: Empresa?, error: String?) in
+                        if empresa != nil {
+                            //Guarda el IdEmpresa en la BD
+                            clientSQL.addEmpresa(empresa: empresa!)
+                        }
+                    })
                     
                     //Cierra la ventana actual y avisa al Menu que valide login
-                    self.dismiss(animated: true, completion: nil)
+                    DispatchQueue.main.async {
+                        self.dismiss(animated: true, completion: nil)
+                    }
                     NotificationCenter.default.post(name: .needsToValidateLogin, object: nil)
                 } else {
                     if error != nil {

@@ -18,6 +18,8 @@ struct Empresa {
     let metros:Int
     let minutos:Int
     
+    
+    
     init(row: Statement) throws {
         idEmpresa = row.intValue("idEmpresa") ?? 0
         nombre = row.stringValue("nombre") ?? ""
@@ -26,5 +28,15 @@ struct Empresa {
         longitud = row.doubleValue("longitud") ?? 0
         metros = row.intValue("metros") ?? 0
         minutos = row.intValue("minutos") ?? 0
+    }
+    
+    init(idEmpresa: Int, nombre: String, imagen: String, latitud: Double, longitud: Double, metros: Int, minutos: Int) {
+        self.idEmpresa = idEmpresa
+        self.nombre = nombre
+        self.imagen = imagen
+        self.latitud = latitud
+        self.longitud = longitud
+        self.metros = metros
+        self.minutos = minutos
     }
 }

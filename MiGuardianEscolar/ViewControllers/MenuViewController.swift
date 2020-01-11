@@ -25,6 +25,7 @@ class MenuViewController: UIViewController {
             print("Este es el código que ya se tiene: \(verificationCode)")
             if let nip = defaults.string(forKey: defaultsKeys.nip) {
                 print("Este es el nip: \(nip)")
+                
                 performSegue(withIdentifier: "validateNIP", sender: self)
             } else {
                 performSegue(withIdentifier: "askNewNIP", sender: self)

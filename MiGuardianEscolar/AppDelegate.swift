@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Squeal
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -44,6 +45,20 @@ struct defaultsKeys {
     static let stringForQR = "StringForQR"
     static let verificationCode = "VerificationCode"
     static let nip = "Nip"
+    static let database = "database"
+}
+
+struct globalVariables {
+    static var db: Database?
+    
+    init() {
+        let defaults = UserDefaults.standard
+        if let dbStored = defaults.object(forKey: defaultsKeys.database) {
+            globalVariables.db = (dbStored as! Database)
+        } else {
+            globalVariables.db = Database()
+        }
+    }
 }
 
 extension Notification.Name {

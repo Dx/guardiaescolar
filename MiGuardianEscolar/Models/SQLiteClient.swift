@@ -10,7 +10,7 @@ import Foundation
 import Squeal
 
 class SQLiteClient {
-    let db = Database()
+    
     
     func createTables() {
         
@@ -23,7 +23,7 @@ class SQLiteClient {
     
     func createEmpresas() {
         do {
-            try db.createTable("Empresa", definitions: [
+            try globalVariables.db!.createTable("Empresa", definitions: [
                 "idEmpresa INTEGER PRIMARY KEY",
                 "nombre TEXT",
                 "imagen TEXT",
@@ -39,7 +39,7 @@ class SQLiteClient {
     
     func createEntidades() {
         do {
-            try db.createTable("Entidades", definitions: [
+            try globalVariables.db!.createTable("Entidades", definitions: [
                 "idEntidad INTEGER PRIMARY KEY",
                 "nombre TEXT",
                 "foto TEXT"
@@ -51,7 +51,7 @@ class SQLiteClient {
     
     func createAcercamientos() {
         do {
-            try db.createTable("Acercamientos", definitions: [
+            try globalVariables.db!.createTable("Acercamientos", definitions: [
                 "nAcerca INTEGER PRIMARY KEY",
                 "fecha TEXT"
             ], ifNotExists: true)
@@ -62,7 +62,7 @@ class SQLiteClient {
     
     func createHorarios() {
         do {
-            try db.createTable("Horarios", definitions: [
+            try globalVariables.db!.createTable("Horarios", definitions: [
                 "idHorario INTEGER PRIMARY KEY",
                 "dias TEXT",
                 "hora TEXT"
@@ -74,7 +74,7 @@ class SQLiteClient {
     
     func createCodigos() {
         do {
-            try db.createTable("Empresa", definitions: [
+            try globalVariables.db!.createTable("Codigos", definitions: [
                 "codigo TEXT PRIMARY KEY",
                 "pin TEXT"
             ], ifNotExists: true)
@@ -84,27 +84,65 @@ class SQLiteClient {
     }
     
     func addEmpresa(empresa: Empresa) {
+        
+        if let empresas = self.getEmpresa(idEmpresa: empresa.idEmpresa) {
+            if empresas.count > 0 {
+                do {
+                    try globalVariables.db!.update("Empresa", set: [
+                        "idEmpresa": empresa.idEmpresa,
+                        "nombre": empresa.nombre,
+                        "imagen": empresa.imagen,
+                        "latitud": empresa.latitud,
+                        "longitud": empresa.longitud,
+                        "metros": empresa.metros,
+                        "minutos": empresa.minutos
+                    ],
+                    whereExpr:"idEmpresa = '\(empresa.idEmpresa)'")
+                } catch {
+                    print("Error \(error)")
+                }
+            } else {
+                do {
+                    try globalVariables.db!.insertInto(
+                        "Empresa",
+                        values: [
+                            "idEmpresa": empresa.idEmpresa,
+                            "nombre": empresa.nombre,
+                            "imagen": empresa.imagen,
+                            "latitud": empresa.latitud,
+                            "longitud": empresa.longitud,
+                            "metros": empresa.metros,
+                            "minutos": empresa.minutos
+                        ]
+                    )
+                } catch {
+                    print("Error \(error)")
+                }
+            }
+        }
+        
+        
+    }
+    
+    func getEmpresa(idEmpresa: Int) -> [Empresa]? {
         do {
-            try db.insertInto(
+            let empresas:[Empresa] = try globalVariables.db!.selectFrom(
                 "Empresa",
-                values: [
-                    "idEmpresa": empresa.idEmpresa,
-                    "nombre": empresa.nombre,
-                    "imagen": empresa.imagen,
-                    "latitud": empresa.latitud,
-                    "longitud": empresa.longitud,
-                    "metros": empresa.metros,
-                    "minutos": empresa.minutos
-                ]
+                whereExpr:"idEmpresa = '\(idEmpresa)'",
+                block: Empresa.init
             )
+            
+            return empresas
+            
         } catch {
             print("Error \(error)")
+            return nil
         }
     }
     
-    func getEmpresas(empresa: Empresa) -> [Empresa]? {
+    func getAllEmpresas(empresa: Empresa) -> [Empresa]? {
         do {
-            let empresas:[Empresa] = try db.selectFrom(
+            let empresas:[Empresa] = try globalVariables.db!.selectFrom(
                 "Empresa",
                 whereExpr:"nombre IS NOT NULL",
                 block: Empresa.init
@@ -113,7 +151,48 @@ class SQLiteClient {
             return empresas
             
         } catch {
-            print("Error")
+            print("Error \(error)")
+            return nil
+        }
+    }
+    
+    func addCodigo(codigo: String) {
+        
+        if let codigos = self.getCodigo(codigo: codigo) {
+            if codigos.count > 0 {
+                do {
+                    try globalVariables.db!.update("Codigos", set: [
+                        "codigo": codigo,
+                        "pin": ""
+                    ],
+                    whereExpr:"codigo = '\(codigo)'")
+                } catch {
+                    print("Error \(error)")
+                }
+            } else {
+                do {
+                    try globalVariables.db!.insertInto("Codigos", values: [
+                        "codigo": codigo,
+                        "pin": ""
+                    ])
+                } catch {
+                    print("Error \(error)")
+                }
+            }
+        }
+    }
+    
+    func getCodigo(codigo: String) -> [Codigo]? {
+        do {
+            let codigos:[Codigo] = try globalVariables.db!.selectFrom(
+                "Codigos",
+                whereExpr:"codigo = '\(codigo)'",
+                block: Codigo.init
+            )
+            
+            return codigos
+        } catch {
+            print("Error \(error)")
             return nil
         }
     }
@@ -124,7 +203,7 @@ class SQLiteClient {
         let value2: Int = 3
         
         do {
-            let idEmpresa = try db.insertInto(
+            try globalVariables.db!.insertInto(
                 "Empresa",
                 values: [
                     "idEmpresa": 3,
@@ -141,7 +220,7 @@ class SQLiteClient {
         }
         
         do {
-            let idEmpresa = try db.insertInto(
+            let idEmpresa = try globalVariables.db!.insertInto(
                 "Empresa",
                 values: [
                     "idEmpresa": 4,
@@ -158,7 +237,7 @@ class SQLiteClient {
         }
         
         do {
-            let empresas:[Empresa] = try db.selectFrom(
+            let empresas:[Empresa] = try globalVariables.db!.selectFrom(
                 "Empresa",
                 whereExpr:"nombre IS NOT NULL",
                 block: Empresa.init

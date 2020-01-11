@@ -1,26 +1,20 @@
 PODS:
-  - SQLite.swift (0.12.2):
-    - SQLite.swift/standard (= 0.12.2)
-  - SQLite.swift/standard (0.12.2)
   - Squeal (1.2.0)
   - SWXMLHash (5.0.1)
 
 DEPENDENCIES:
-  - SQLite.swift (~> 0.12.0)
-  - Squeal
+  - Squeal (= 1.2.0)
   - SWXMLHash
 
 SPEC REPOS:
   trunk:
-    - SQLite.swift
     - Squeal
     - SWXMLHash
 
 SPEC CHECKSUMS:
-  SQLite.swift: d2b4642190917051ce6bd1d49aab565fe794eea3
   Squeal: f6ca46fb5b7b24c03b0e8c729b038bc4ca964241
   SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
 
-PODFILE CHECKSUM: 2693f93b798fe516617b659e2f3cef8defc0d662
+PODFILE CHECKSUM: b25453b6a57f783eee2aab6e2ff649870029e2aa
 
 COCOAPODS: 1.8.4
