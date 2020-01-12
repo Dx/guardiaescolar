@@ -78,6 +78,6 @@
 		</dict>
 	</dict>
 	<key>NSCameraUsageDescription</key>
-	<string>Se utilizará la cámara para agregar el registro de personas</string>
+	<string>Se utilizará la cámara para agregar el registro de entidades</string>
 </dict>
 </plist>

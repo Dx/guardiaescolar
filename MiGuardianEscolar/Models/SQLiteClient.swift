@@ -31,7 +31,6 @@ class SQLiteClient {
     func createTables() {
         
         createEmpresas()
-        createPersonas()
         createEntidades()
         createAcercamientos()
         createHorarios()
@@ -54,27 +53,14 @@ class SQLiteClient {
         }
     }
     
-    func createPersonas() {
+    func createEntidades() {
         do {
-            try db!.createTable("Personas", definitions: [
-                "idPersona INTEGER PRIMARY KEY AUTOINCREMENT",
+            try db!.createTable("Entidades", definitions: [
+                "idEntidad INTEGER PRIMARY KEY AUTOINCREMENT",
                 "nombre TEXT",
                 "telefono TEXT",
                 "email TEXT",
                 "imagen TEXT"
-            ], ifNotExists: true)
-        } catch {
-            print("Error \(error)")
-        }
-    }
-    
-    
-    func createEntidades() {
-        do {
-            try db?.createTable("Entidades", definitions: [
-                "idEntidad INTEGER PRIMARY KEY",
-                "nombre TEXT",
-                "foto TEXT"
             ], ifNotExists: true)
         } catch {
             print("Error \(error)")
@@ -274,15 +260,15 @@ class SQLiteClient {
         }
     }
     
-    func getPersona(idPersona: Int) -> [Persona]? {
+    func getEntidad(idEntidad: Int) -> [Entidad]? {
         do {
-            let personas:[Persona] = try db!.selectFrom(
-                "Personas",
-                whereExpr:"idPersona = '\(idPersona)'",
-                block: Persona.init
+            let entidades:[Entidad] = try db!.selectFrom(
+                "Entidades",
+                whereExpr:"idEntidad = '\(idEntidad)'",
+                block: Entidad.init
             )
             
-            return personas
+            return entidades
             
         } catch {
             print("Error \(error)")
@@ -290,15 +276,15 @@ class SQLiteClient {
         }
     }
     
-    func getPersonas() -> [Persona]? {
+    func getEntidades() -> [Entidad]? {
         do {
-            let personas:[Persona] = try db!.selectFrom(
-                "Personas",
+            let entidades:[Entidad] = try db!.selectFrom(
+                "Entidades",
                 whereExpr:"nombre IS NOT NULL",
-                block: Persona.init
+                block: Entidad.init
             )
             
-            return personas
+            return entidades
             
         } catch {
             print("Error \(error)")
@@ -306,89 +292,36 @@ class SQLiteClient {
         }
     }
     
-    func addPersona(persona: Persona) {
-        if let personas = self.getPersona(idPersona: persona.idPersona) {
-            if personas.count > 0 {
+    func addEntidad(entidad: Entidad) {
+        if let entidades = self.getEntidad(idEntidad: entidad.idEntidad) {
+            if entidades.count > 0 {
                 do {
-                    try db?.update("Personas", set: [
-                        "idPersona": persona.idPersona,
-                        "nombre": persona.nombre,
-                        "telefono": persona.telefono,
-                        "email": persona.email,
-                        "imagen": persona.imagen
+                    try db?.update("Entidades", set: [
+                        "idEntidad": entidad.idEntidad,
+                        "nombre": entidad.nombre,
+                        "telefono": entidad.telefono,
+                        "email": entidad.email,
+                        "imagen": entidad.imagen
                     ],
-                    whereExpr:"idPersona = '\(persona.idPersona)'")
+                    whereExpr:"idEntidad = '\(entidad.idEntidad)'")
                 } catch {
                     print("Error \(error)")
                 }
             } else {
                 do {
                     try db?.insertInto(
-                        "Personas",
+                        "Entidades",
                         values: [
-                            "nombre": persona.nombre,
-                            "telefono": persona.telefono,
-                            "email": persona.email,
-                            "imagen": persona.imagen
+                            "nombre": entidad.nombre,
+                            "telefono": entidad.telefono,
+                            "email": entidad.email,
+                            "imagen": entidad.imagen
                         ]
                     )
                 } catch {
                     print("Error \(error)")
                 }
             }
-        }
-    }
-    
-    func test() {
-        
-        let value1: Double = 12.12
-        let value2: Int = 3
-        
-        do {
-            try db!.insertInto(
-                "Empresa",
-                values: [
-                    "idEmpresa": 3,
-                    "nombre": "Empresa 1",
-                    "imagen": "jkflasdf",
-                    "latitud": value1,
-                    "longitud": value1,
-                    "metros": value2,
-                    "minutos": value2
-                ]
-            )
-        } catch {
-            print("Error \(error)")
-        }
-        
-        do {
-            try db!.insertInto(
-                "Empresa",
-                values: [
-                    "idEmpresa": 4,
-                    "nombre": "Empresa 2",
-                    "imagen": "jkflasdffs",
-                    "latitud": -12.12,
-                    "longitud": 13.93,
-                    "metros": 4,
-                    "minutos": 5
-                ]
-            )
-        } catch {
-            print("Error")
-        }
-        
-        do {
-            let empresas:[Empresa] = try db!.selectFrom(
-                "Empresa",
-                whereExpr:"nombre IS NOT NULL",
-                block: Empresa.init
-            )
-            
-            print(empresas[0].nombre)
-            
-        } catch {
-            print("Error")
         }
     }
 }

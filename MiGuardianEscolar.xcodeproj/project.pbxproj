@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -27,7 +27,7 @@
 		E1A8E03723C94CE10004FB78 /* Tools.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03623C94CE10004FB78 /* Tools.swift */; };
 		E1A8E03923C9587A0004FB78 /* Horario.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03823C9587A0004FB78 /* Horario.swift */; };
 		E1A8E03B23C966C00004FB78 /* ChangePinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03A23C966C00004FB78 /* ChangePinViewController.swift */; };
-		E1A8E03D23CA5D740004FB78 /* Persona.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E03C23CA5D730004FB78 /* Persona.swift */; };
+		E1A8E04123CAF1950004FB78 /* Entidad.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A8E04023CAF1950004FB78 /* Entidad.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,7 +54,7 @@
 		E1A8E03623C94CE10004FB78 /* Tools.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tools.swift; sourceTree = "<group>"; };
 		E1A8E03823C9587A0004FB78 /* Horario.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Horario.swift; sourceTree = "<group>"; };
 		E1A8E03A23C966C00004FB78 /* ChangePinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChangePinViewController.swift; sourceTree = "<group>"; };
-		E1A8E03C23CA5D730004FB78 /* Persona.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Persona.swift; sourceTree = "<group>"; };
+		E1A8E04023CAF1950004FB78 /* Entidad.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Entidad.swift; sourceTree = "<group>"; };
 		FC2200FB127E67541D67C35D /* Pods_MiGuardianEscolar.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_MiGuardianEscolar.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -143,7 +143,7 @@
 				E17D82EC23C8F95F00A82823 /* Empresa.swift */,
 				E1A8E03423C921C00004FB78 /* Codigo.swift */,
 				E1A8E03823C9587A0004FB78 /* Horario.swift */,
-				E1A8E03C23CA5D730004FB78 /* Persona.swift */,
+				E1A8E04023CAF1950004FB78 /* Entidad.swift */,
 			);
 			path = Entities;
 			sourceTree = "<group>";
@@ -290,9 +290,9 @@
 				E17D82ED23C8F95F00A82823 /* Empresa.swift in Sources */,
 				E1A8E03723C94CE10004FB78 /* Tools.swift in Sources */,
 				E159E86E23C774B800E96812 /* NewNipViewController.swift in Sources */,
+				E1A8E04123CAF1950004FB78 /* Entidad.swift in Sources */,
 				E159E85923C7729800E96812 /* MenuViewController.swift in Sources */,
 				E1A8E03923C9587A0004FB78 /* Horario.swift in Sources */,
-				E1A8E03D23CA5D740004FB78 /* Persona.swift in Sources */,
 				E159E87223C7761100E96812 /* QRCreatorViewController.swift in Sources */,
 				E16C962D23C7FBFE00EE16A5 /* SQLiteClient.swift in Sources */,
 				E159E85523C7729700E96812 /* AppDelegate.swift in Sources */,

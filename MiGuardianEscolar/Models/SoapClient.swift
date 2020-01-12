@@ -66,8 +66,7 @@ class SoapClient {
                 config.shouldProcessLazily = true
             }.parse(data!)
             
-            for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaEmpresaIOSResponse"]["return"]["item"].all {
-                
+            for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaEmpresaIOSResponse"]["return"]["item"].all {                
                 
                 let idEmpresa = Int(item["nEmp"].element!.text)!
                 let nombre = item["nombre"].element!.text

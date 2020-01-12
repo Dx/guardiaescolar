@@ -17,8 +17,8 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     @IBOutlet weak var email: UITextField!
     @IBOutlet weak var personPhoto: UIImageView!
     
-    var people: [Persona]?
-    var selectedIdPersona = 0
+    var people: [Entidad]?
+    var selectedIdEntidad = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,7 +39,7 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     
     func updateTableData() {
         let clientSQL = SQLiteClient()
-        self.people = clientSQL.getPersonas()
+        self.people = clientSQL.getEntidades()
         peopleTable.reloadData()
     }
     
@@ -55,7 +55,7 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
             }
             
             let clientSQL = SQLiteClient()
-            clientSQL.addPersona(persona: Persona(idPersona: selectedIdPersona, nombre: nameText, telefono: phoneText, email: emailText, imagen: imageText))
+            clientSQL.addEntidad(entidad: Entidad(idEntidad: selectedIdEntidad, nombre: nameText, telefono: phoneText, email: emailText, imagen: imageText))
             
             updateTableData()
             cleanFields()
@@ -66,7 +66,7 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         name.text = ""
         phone.text = ""
         email.text = ""
-        selectedIdPersona = 0
+        selectedIdEntidad = 0
         personPhoto.image = nil
     }
     
@@ -104,20 +104,20 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
-        fillData(persona: people![indexPath.row])
+        fillData(entidad: people![indexPath.row])
     }
     
-    func fillData(persona: Persona) {
-        selectedIdPersona = persona.idPersona
-        name.text = persona.nombre
-        phone.text = persona.telefono
-        email.text = persona.email
+    func fillData(entidad: Entidad) {
+        selectedIdEntidad = entidad.idEntidad
+        name.text = entidad.nombre
+        phone.text = entidad.telefono
+        email.text = entidad.email
         let tools = Tools()
-        personPhoto.image = tools.base64ToImage(persona.imagen)
+        personPhoto.image = tools.base64ToImage(entidad.imagen)
     }
     
     func photoLibrary()
-    {        
+    {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             let picker = UIImagePickerController()
             picker.allowsEditing = true
