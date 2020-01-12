@@ -57,18 +57,19 @@ class UserCodeViewController: UIViewController {
     }
     
     func validations() -> Bool {
+        var result = false
+        
         if var code = verificationCode.text {
             code = code.trimmingCharacters(in:
-                .whitespacesAndNewlines
-            )
+                .whitespacesAndNewlines)
             if code != "" {
                 verificationCode.text = code
-                return true
+                result = true
             } else {
-                return false
+                result = false
             }
-        } else {
-            return false
         }
+        
+        return result
     }
 }

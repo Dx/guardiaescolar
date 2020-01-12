@@ -26,8 +26,15 @@ class NipValidationViewController: UIViewController {
         
         let clientSQL = SQLiteClient()
         if let empresa = clientSQL.getEmpresa(idEmpresa: idEmpresa) {
-            let tools = Tools()
-            image.image = tools.base64ToImage(empresa[0].imagen)
+            if empresa.count > 0 {
+                let tools = Tools()
+                
+                if let imageFromB64 = tools.base64ToImage(empresa[0].imagen) {
+                    image.image = imageFromB64
+                } else {
+                    print("Foto inválida")
+                }
+            }
         }
         
         self.image.layer.cornerRadius = 5
@@ -45,7 +52,15 @@ class NipValidationViewController: UIViewController {
                 defaults.set(true, forKey: defaultsKeys.loggedIn)
                 NotificationCenter.default.post(name: .needsToValidateLogin, object: nil)
             } else {
-                // Muestra alerta
+                let alert = UIAlertController(title: "PIN inválido", message: "Verifique su información", preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                      
+                            print("default")
+
+                      }))
+                self.present(alert, animated: true, completion: {() in
+                    self.loginNip.text = ""
+                })
             }
         }
         

@@ -292,8 +292,11 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ZZl-Eu-06M">
-                                <rect key="frame" x="56" y="243" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="63.5" y="243" width="31" height="30"/>
+                                <state key="normal" title="Foto"/>
+                                <connections>
+                                    <action selector="takePhotoClick:" destination="7rO-o5-hpN" eventType="touchUpInside" id="UgW-RZ-rXM"/>
+                                </connections>
                             </button>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="WSj-0n-jC3">
                                 <rect key="frame" x="20" y="308" width="374" height="554"/>
@@ -342,6 +345,7 @@
                         <outlet property="email" destination="GBB-k9-Qh6" id="B8y-x1-vUE"/>
                         <outlet property="name" destination="Wf0-jN-mr0" id="7mC-70-YHu"/>
                         <outlet property="peopleTable" destination="WSj-0n-jC3" id="9Ac-YK-eka"/>
+                        <outlet property="personPhoto" destination="Rvm-PH-G79" id="7fd-Z0-I9d"/>
                         <outlet property="phone" destination="OiU-Lj-tcM" id="haz-E9-dBN"/>
                     </connections>
                 </viewController>

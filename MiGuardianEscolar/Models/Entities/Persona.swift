@@ -17,7 +17,7 @@ struct Persona {
     let imagen: String
     
     init(row: Statement) throws {
-        idPersona = row.intValue("idHorario") ?? 0
+        idPersona = row.intValue("idPersona") ?? 0
         nombre = row.stringValue("nombre") ?? ""
         telefono = row.stringValue("telefono") ?? ""
         email = row.stringValue("email") ?? ""

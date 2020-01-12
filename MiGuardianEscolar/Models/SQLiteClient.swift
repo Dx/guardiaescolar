@@ -170,7 +170,7 @@ class SQLiteClient {
         }
     }
     
-    func getAllEmpresas(empresa: Empresa) -> [Empresa]? {
+    func getAllEmpresas() -> [Empresa]? {
         do {
             let empresas:[Empresa] = try db!.selectFrom(
                 "Empresa",
@@ -314,7 +314,8 @@ class SQLiteClient {
                         "idPersona": persona.idPersona,
                         "nombre": persona.nombre,
                         "telefono": persona.telefono,
-                        "email": persona.email
+                        "email": persona.email,
+                        "imagen": persona.imagen
                     ],
                     whereExpr:"idPersona = '\(persona.idPersona)'")
                 } catch {
@@ -327,7 +328,8 @@ class SQLiteClient {
                         values: [
                             "nombre": persona.nombre,
                             "telefono": persona.telefono,
-                            "email": persona.email
+                            "email": persona.email,
+                            "imagen": persona.imagen
                         ]
                     )
                 } catch {
