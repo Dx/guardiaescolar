@@ -119,4 +119,102 @@ class SoapClient {
         task.resume()
     }
     
+    func sendNewEntity(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd'T'HH:mm:ss"
+        let currentDate = formatter.string(from: Date())
+        
+        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:insEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(currentDate)</date></hs:insEntIOS></soapenv:Body></soapenv:Envelope>"
+        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
+
+        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let session = URLSession.shared
+
+        lobj_Request.httpMethod = "POST"
+        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
+        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+            
+            let xml = SWXMLHash.config {
+                config in
+                config.shouldProcessLazily = true
+            }.parse(data!)
+            
+            if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:insEntIOSResponse"]["return"].element?.text {
+                if response == "1" {
+                    completion(response, nil)
+                } else {
+                    completion(nil, "No fue posible guardar")
+                }
+            }
+        })
+        task.resume()
+    }
+    
+    func sendUpdateEntity(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd'T'HH:mm:ss"
+        let currentDate = formatter.string(from: Date())
+        
+        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(currentDate)</date></hs:actEntIOS></soapenv:Body></soapenv:Envelope>"
+        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
+
+        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let session = URLSession.shared
+
+        lobj_Request.httpMethod = "POST"
+        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
+        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+            
+            let xml = SWXMLHash.config {
+                config in
+                config.shouldProcessLazily = true
+            }.parse(data!)
+            
+            if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:actEntIOSResponse"]["return"].element?.text {
+                if response == "1" {
+                    completion(response, nil)
+                } else {
+                    completion(nil, "No fue posible guardar")
+                }
+            }
+        })
+        task.resume()
+    }
+    
+    func sendUpdatePhoto(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
+        
+        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actFotoEntIOS><ne>\(entidad.idEntidad)</ne><foto>\(entidad.imagen)</foto></hs:actFotoEntIOS></soapenv:Body></soapenv:Envelope>"
+        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
+
+        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let session = URLSession.shared
+
+        lobj_Request.httpMethod = "POST"
+        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
+        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+            
+            let xml = SWXMLHash.config {
+                config in
+                config.shouldProcessLazily = true
+            }.parse(data!)
+            
+            if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:actFotoEntIOSResponse"]["return"].element?.text {
+                if response == "1" {
+                    completion(response, nil)
+                } else {
+                    completion(nil, "No fue posible guardar")
+                }
+            }
+        })
+        task.resume()
+    }
+    
 }

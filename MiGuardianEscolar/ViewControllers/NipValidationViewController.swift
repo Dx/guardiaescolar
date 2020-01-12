@@ -54,9 +54,7 @@ class NipValidationViewController: UIViewController {
             } else {
                 let alert = UIAlertController(title: "PIN inválido", message: "Verifique su información", preferredStyle: .alert)
                 alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                      
                             print("default")
-
                       }))
                 self.present(alert, animated: true, completion: {() in
                     self.loginNip.text = ""

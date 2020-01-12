@@ -55,10 +55,46 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
             }
             
             let clientSQL = SQLiteClient()
-            clientSQL.addEntidad(entidad: Entidad(idEntidad: selectedIdEntidad, nombre: nameText, telefono: phoneText, email: emailText, imagen: imageText))
+            let entidad = Entidad(idEntidad: selectedIdEntidad, nombre: nameText, telefono: phoneText, email: emailText, imagen: imageText)
+            clientSQL.addEntidad(entidad: entidad)
             
-            updateTableData()
-            cleanFields()
+            let soapClient = SoapClient()
+            if selectedIdEntidad == 0 {
+                // Es nuevo
+                soapClient.sendNewEntity(entidad: entidad, completion: {(result: String?, error: String?) in
+                    if error != nil {
+                        let alert = UIAlertController(title: "Error al guardar", message: error!, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                                    print("default")
+                              }))
+                        self.present(alert, animated: true, completion: {() in
+                            // Si se necesita hacer algo cuando se cierra
+                        })
+                    } else {
+                        
+                        
+                        
+                        self.updateTableData()
+                        self.cleanFields()
+                    }
+                })
+            } else {
+                // Es actualización
+                soapClient.sendUpdateEntity(entidad: entidad, completion: {(result: String?, error: String?) in
+                    if error != nil {
+                        let alert = UIAlertController(title: "Error al guardar", message: error!, preferredStyle: .alert)
+                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                                    print("default")
+                              }))
+                        self.present(alert, animated: true, completion: {() in
+                            // Si se necesita hacer algo cuando se cierra
+                        })
+                    } else {
+                        self.updateTableData()
+                        self.cleanFields()
+                    }
+                })
+            }
         }
     }
     
