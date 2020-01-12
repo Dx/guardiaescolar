@@ -45,57 +45,89 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     
     @objc func saveClick() {
         if validations() {
-            let nameText = name.text!
-            let phoneText = phone.text!
-            let emailText = email.text!
-            var imageText = ""
-            if personPhoto.image != nil {
-                let tools = Tools()
-                imageText = tools.imageToBase64(personPhoto.image!)!
-            }
+            let entidad = createEntidad()
             
-            let clientSQL = SQLiteClient()
-            let entidad = Entidad(idEntidad: selectedIdEntidad, nombre: nameText, telefono: phoneText, email: emailText, imagen: imageText)
-            clientSQL.addEntidad(entidad: entidad)
+            addToSQLite(entidad: entidad)
             
-            let soapClient = SoapClient()
-            if selectedIdEntidad == 0 {
-                // Es nuevo
-                soapClient.sendNewEntity(entidad: entidad, completion: {(result: String?, error: String?) in
-                    if error != nil {
-                        let alert = UIAlertController(title: "Error al guardar", message: error!, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                                    print("default")
-                              }))
-                        self.present(alert, animated: true, completion: {() in
-                            // Si se necesita hacer algo cuando se cierra
-                        })
-                    } else {
-                        
-                        
-                        
-                        self.updateTableData()
-                        self.cleanFields()
-                    }
+            addToSOAPService(entidad: entidad)
+        }
+        
+        self.updateTableData()
+        self.cleanFields()
+    }
+    
+    func addToSOAPService(entidad: Entidad) {
+        
+        if selectedIdEntidad == 0 {
+            // Es nuevo
+            newEntidadOnService(entidad: entidad)
+        } else {
+            // Es actualización
+            updateEntidadOnService(entidad: entidad)
+        }
+    }
+    
+    func updateEntidadOnService(entidad: Entidad) {
+        let soapClient = SoapClient()
+        
+        soapClient.sendUpdateEntity(entidad: entidad, completion: {(result: String?, error: String?) in
+            if error != nil {
+                let alert = UIAlertController(title: "Error al guardar", message: error!, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                            print("default")
+                      }))
+                self.present(alert, animated: true, completion: {() in
+                    // Si se necesita hacer algo cuando se cierra
                 })
             } else {
-                // Es actualización
-                soapClient.sendUpdateEntity(entidad: entidad, completion: {(result: String?, error: String?) in
-                    if error != nil {
-                        let alert = UIAlertController(title: "Error al guardar", message: error!, preferredStyle: .alert)
-                        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
-                                    print("default")
-                              }))
-                        self.present(alert, animated: true, completion: {() in
-                            // Si se necesita hacer algo cuando se cierra
-                        })
-                    } else {
-                        self.updateTableData()
-                        self.cleanFields()
-                    }
-                })
+                self.updatePhotoOnService(entidad: entidad)
             }
+        })
+    }
+    
+    func updatePhotoOnService(entidad: Entidad) {
+        let soapClient = SoapClient()
+        
+        soapClient.sendUpdatePhoto(entidad: entidad, completion: {(result: String?, error: String?) in
+            print("Error al guardar la foto")
+        })
+    }
+    
+    func newEntidadOnService(entidad: Entidad) {
+        let soapClient = SoapClient()
+        
+        soapClient.sendNewEntity(entidad: entidad, completion: {(result: String?, error: String?) in
+            if error != nil {
+                let alert = UIAlertController(title: "Error al guardar", message: error!, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { action in
+                            print("default")
+                      }))
+                self.present(alert, animated: true, completion: {() in
+                    // Si se necesita hacer algo cuando se cierra
+                })
+            } else {
+                self.updatePhotoOnService(entidad: entidad)
+            }
+        })
+    }
+    
+    func addToSQLite(entidad: Entidad) {
+        let clientSQL = SQLiteClient()
+        
+        clientSQL.addEntidad(entidad: entidad)
+    }
+    
+    func createEntidad() -> Entidad {
+        let nameText = name.text!
+        let phoneText = phone.text!
+        let emailText = email.text!
+        var imageText = ""
+        if personPhoto.image != nil {
+            let tools = Tools()
+            imageText = tools.imageToBase64(personPhoto.image!)!
         }
+        
+        return Entidad(idEntidad: selectedIdEntidad, nombre: nameText, telefono: phoneText, email: emailText, imagen: imageText)
     }
     
     func cleanFields() {
