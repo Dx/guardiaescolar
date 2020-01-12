@@ -1,4 +1,4 @@
-module Pods_MiGuardianEscolar {
+framework module Pods_MiGuardianEscolar {
   umbrella header "Pods-MiGuardianEscolar-umbrella.h"
 
   export *

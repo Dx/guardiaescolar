@@ -31,6 +31,7 @@ class SQLiteClient {
     func createTables() {
         
         createEmpresas()
+        createPersonas()
         createEntidades()
         createAcercamientos()
         createHorarios()
@@ -52,6 +53,21 @@ class SQLiteClient {
             print("Error \(error)")
         }
     }
+    
+    func createPersonas() {
+        do {
+            try db!.createTable("Personas", definitions: [
+                "idPersona INTEGER PRIMARY KEY AUTOINCREMENT",
+                "nombre TEXT",
+                "telefono TEXT",
+                "email TEXT",
+                "imagen TEXT"
+            ], ifNotExists: true)
+        } catch {
+            print("Error \(error)")
+        }
+    }
+    
     
     func createEntidades() {
         do {
@@ -255,6 +271,69 @@ class SQLiteClient {
         } catch {
             print("Error \(error)")
             return nil
+        }
+    }
+    
+    func getPersona(idPersona: Int) -> [Persona]? {
+        do {
+            let personas:[Persona] = try db!.selectFrom(
+                "Personas",
+                whereExpr:"idPersona = '\(idPersona)'",
+                block: Persona.init
+            )
+            
+            return personas
+            
+        } catch {
+            print("Error \(error)")
+            return nil
+        }
+    }
+    
+    func getPersonas() -> [Persona]? {
+        do {
+            let personas:[Persona] = try db!.selectFrom(
+                "Personas",
+                whereExpr:"nombre IS NOT NULL",
+                block: Persona.init
+            )
+            
+            return personas
+            
+        } catch {
+            print("Error \(error)")
+            return nil
+        }
+    }
+    
+    func addPersona(persona: Persona) {
+        if let personas = self.getPersona(idPersona: persona.idPersona) {
+            if personas.count > 0 {
+                do {
+                    try db?.update("Personas", set: [
+                        "idPersona": persona.idPersona,
+                        "nombre": persona.nombre,
+                        "telefono": persona.telefono,
+                        "email": persona.email
+                    ],
+                    whereExpr:"idPersona = '\(persona.idPersona)'")
+                } catch {
+                    print("Error \(error)")
+                }
+            } else {
+                do {
+                    try db?.insertInto(
+                        "Personas",
+                        values: [
+                            "nombre": persona.nombre,
+                            "telefono": persona.telefono,
+                            "email": persona.email
+                        ]
+                    )
+                } catch {
+                    print("Error \(error)")
+                }
+            }
         }
     }
     

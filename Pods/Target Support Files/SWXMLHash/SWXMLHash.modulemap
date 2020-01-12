@@ -1,4 +1,4 @@
-module SWXMLHash {
+framework module SWXMLHash {
   umbrella header "SWXMLHash-umbrella.h"
 
   export *

@@ -1,20 +1,68 @@
 PODS:
+  - Floaty (4.2.0)
+  - MaterialComponents/AnimationTiming (101.0.0)
+  - MaterialComponents/Buttons (101.0.0):
+    - MaterialComponents/Elevation
+    - MaterialComponents/Ink
+    - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
+    - MaterialComponents/ShadowElevations
+    - MaterialComponents/ShadowLayer
+    - MaterialComponents/Shapes
+    - MaterialComponents/Typography
+    - MDFInternationalization
+    - MDFTextAccessibility
+  - MaterialComponents/Elevation (101.0.0):
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/Ink (101.0.0):
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/private/Application (101.0.0)
+  - MaterialComponents/private/Color (101.0.0)
+  - MaterialComponents/private/Math (101.0.0)
+  - MaterialComponents/Ripple (101.0.0):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+  - MaterialComponents/ShadowElevations (101.0.0)
+  - MaterialComponents/ShadowLayer (101.0.0):
+    - MaterialComponents/ShadowElevations
+  - MaterialComponents/Shapes (101.0.0):
+    - MaterialComponents/private/Color
+    - MaterialComponents/private/Math
+    - MaterialComponents/ShadowLayer
+  - MaterialComponents/Typography (101.0.0):
+    - MaterialComponents/private/Application
+    - MaterialComponents/private/Math
+  - MDFInternationalization (2.0.0)
+  - MDFTextAccessibility (2.0.0)
   - Squeal (1.2.0)
   - SWXMLHash (5.0.1)
 
 DEPENDENCIES:
+  - Floaty (~> 4.2.0)
+  - MaterialComponents/Buttons
   - Squeal (= 1.2.0)
   - SWXMLHash
 
 SPEC REPOS:
   trunk:
+    - Floaty
+    - MaterialComponents
+    - MDFInternationalization
+    - MDFTextAccessibility
     - Squeal
     - SWXMLHash
 
 SPEC CHECKSUMS:
+  Floaty: e2bd5a0f6f7f70899e26ff2da31081c8bee8d1b0
+  MaterialComponents: d656a95882a5b13b0df9a1db27d56bd191eaad47
+  MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
+  MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   Squeal: f6ca46fb5b7b24c03b0e8c729b038bc4ca964241
   SWXMLHash: 9cc0c2e4807926c74377724aa8722ee5707a0485
 
-PODFILE CHECKSUM: b25453b6a57f783eee2aab6e2ff649870029e2aa
+PODFILE CHECKSUM: 9a5d540e72e66d66df82113fe9b08a82f89dfca8
 
 COCOAPODS: 1.8.4

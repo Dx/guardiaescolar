@@ -68,7 +68,7 @@ class SoapClient {
             
             for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaEmpresaIOSResponse"]["return"]["item"].all {
                 
-                print(item)
+                
                 let idEmpresa = Int(item["nEmp"].element!.text)!
                 let nombre = item["nombre"].element!.text
                 let imagen = item["imagen"].element!.text
