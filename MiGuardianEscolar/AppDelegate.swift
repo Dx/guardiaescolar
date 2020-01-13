@@ -49,6 +49,9 @@ struct defaultsKeys {
     static let database = "database"
     static let empresa = "empresa"
     static let loggedIn = "loggedIn"
+    static let minutosTolerancia = "minutosTolerancia"
+    static let latitudEmpresa = "latitudEmpresa"
+    static let longitudEmpresa = "longitudEmpresa"
 }
 
 extension Notification.Name {

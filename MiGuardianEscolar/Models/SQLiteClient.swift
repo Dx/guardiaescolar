@@ -260,6 +260,22 @@ class SQLiteClient {
         }
     }
     
+    func getHorarios() -> [Horario]? {
+        do {
+            let horarios:[Horario] = try db!.selectFrom(
+                "Horarios",
+                whereExpr:"dias IS NOT NULL",
+                block: Horario.init
+            )
+            
+            return horarios
+            
+        } catch {
+            print("Error \(error)")
+            return nil
+        }
+    }
+    
     func getEntidad(idEntidad: Int) -> [Entidad]? {
         do {
             let entidades:[Entidad] = try db!.selectFrom(

@@ -70,6 +70,9 @@
                     </view>
                     <navigationItem key="navigationItem" title="Menú principal" id="uJk-WG-1JV"/>
                     <connections>
+                        <outlet property="cambiarPinButton" destination="30h-jB-d8v" id="k5K-Eb-fM9"/>
+                        <outlet property="qrButton" destination="hPk-TC-SAa" id="CWT-Gl-Bsp"/>
+                        <outlet property="registrarButton" destination="Cbs-sA-KHE" id="c4e-uo-DMR"/>
                         <segue destination="1Bd-6C-bpN" kind="presentation" identifier="showVerificationCode" id="kl9-5Y-jtX"/>
                         <segue destination="j3L-Zw-D1d" kind="presentation" identifier="askNewNIP" id="uSM-aJ-sr4"/>
                         <segue destination="HgN-6c-qe3" kind="presentation" identifier="validateNIP" id="vfw-W6-LBq"/>
