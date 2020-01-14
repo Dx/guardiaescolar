@@ -70,7 +70,10 @@ class SoapClient {
                 
                 let idEmpresa = Int(item["nEmp"].element!.text)!
                 let nombre = item["nombre"].element!.text
-                let imagen = item["imagen"].element!.text
+                var imagen = item["imagen"].element!.text
+                
+                // quitando los saltos de línea
+                imagen = String(imagen.filter { !" \n".contains($0) })
                 let latitud = Double(item["latitud"].element!.text)!
                 let longitud = Double(item["longitud"].element!.text)!
                 let metros = Int(item["metros"].element!.text)!
@@ -120,12 +123,8 @@ class SoapClient {
     }
     
     func sendNewEntity(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
-        
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd'T'HH:mm:ss"
-        let currentDate = formatter.string(from: Date())
-        
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:insEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(currentDate)</date></hs:insEntIOS></soapenv:Body></soapenv:Envelope>"
+                
+        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:insEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(getCurrentDate())</date></hs:insEntIOS></soapenv:Body></soapenv:Envelope>"
         let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
 
         let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
@@ -155,11 +154,7 @@ class SoapClient {
     
     func sendUpdateEntity(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
         
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy/MM/dd'T'HH:mm:ss"
-        let currentDate = formatter.string(from: Date())
-        
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(currentDate)</date></hs:actEntIOS></soapenv:Body></soapenv:Envelope>"
+        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(getCurrentDate())</date></hs:actEntIOS></soapenv:Body></soapenv:Envelope>"
         let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
 
         let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
@@ -215,6 +210,42 @@ class SoapClient {
             }
         })
         task.resume()
+    }
+    
+    func reportOnGeofence(completion:@escaping (_ result: String?, _ error: String?) -> Void){
+        
+        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:acercaIOS><date>\(getCurrentDate())</date></hs:acercaIOS></soapenv:Body></soapenv:Envelope>"
+        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
+
+        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let session = URLSession.shared
+
+        lobj_Request.httpMethod = "POST"
+        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
+        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
+
+        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+            
+            let xml = SWXMLHash.config {
+                config in
+                config.shouldProcessLazily = true
+            }.parse(data!)
+            
+            if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:actFotoEntIOSResponse"]["return"].element?.text {
+                if response == "1" {
+                    completion("1", nil)
+                } else {
+                    completion(nil, "No fue posible guardar")
+                }
+            }
+        })
+        task.resume()
+    }
+    
+    func getCurrentDate() -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        return formatter.string(from: Date())
     }
     
 }

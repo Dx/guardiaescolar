@@ -9,7 +9,7 @@
 import UIKit
 import CoreLocation
 
-class MenuViewController: UIViewController {
+class MenuViewController: UIViewController, CLLocationManagerDelegate {
 
     @IBOutlet weak var qrButton: UIButton!
     @IBOutlet weak var registrarButton: UIButton!
@@ -17,22 +17,31 @@ class MenuViewController: UIViewController {
     
     let defaults = UserDefaults.standard
     var horarios: [Horario]?
+    var locationManager: CLLocationManager!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(validateLogin), name: .needsToValidateLogin, object: nil)
         
+        showButtons(false)
+        configureLocationManager()
         defaults.set(false, forKey: defaultsKeys.loggedIn)
         
         validateLogin()
         
-        setTimerForLocation()
+    }
+    
+    func configureLocationManager() {
+        locationManager = CLLocationManager()
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+        locationManager.requestAlwaysAuthorization()
     }
     
     func setTimerForLocation() {
         
-        let timer = Timer(timeInterval: 300.0, target: self, selector: #selector(checkLocation), userInfo: nil, repeats: true)
+        let timer = Timer(timeInterval: 3.0, target: self, selector: #selector(checkLocation), userInfo: nil, repeats: true)
         timer.tolerance = 0.2
 
         RunLoop.current.add(timer, forMode: .common)
@@ -47,22 +56,49 @@ class MenuViewController: UIViewController {
     }
     
     @objc func checkLocation() {
+        print("Check location")
+        
         // Revisa si está en horario
         let currentDate = Date()
         if horarios != nil {
             for horario in horarios! {
+                // Crea la región por monitorear
+                let region = createRegion(latitud: defaults.double(forKey: defaultsKeys.latitudEmpresa), longitud: defaults.double(forKey: defaultsKeys.latitudEmpresa))
+                
                 if horario.isInSchedule(currentDate, tolerance: defaults.integer(forKey: defaultsKeys.minutosTolerancia)) {
-                    // Activa localización
-                    if isInGeofence() {
-                        // Si cumple, registra en server
-                    }
+                    // Activa monitoreo
+                    locationManager.startMonitoring(for: region)
+                } else {
+                    // Detiene monitoreo
+                    locationManager.stopMonitoring(for: region)
                 }
             }
         }
     }
     
-    func isInGeofence() -> Bool {
-        return true
+    
+    func createRegion(latitud: Double, longitud: Double) -> CLRegion {
+        let center = CLLocationCoordinate2D(latitude: latitud, longitude: longitud)
+        let maxDistance = CLLocationDistance(exactly: defaults.integer(forKey: defaultsKeys.metrosEmpresa))!
+        let region = CLCircularRegion(center: center, radius: maxDistance, identifier: "Empresa")
+        region.notifyOnEntry = true
+        region.notifyOnExit = false
+        
+        return region
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didEnterRegion region: CLRegion) {
+        if let region = region as? CLCircularRegion {
+            
+            // Se reporta al WS
+            let soapClient = SoapClient()
+            soapClient.reportOnGeofence(completion:{(result: String?, error: String?) in
+                if error == nil {
+                    // Detiene el monitoreo
+                    self.locationManager.stopMonitoring(for: region)
+                }
+            })
+        }
     }
     
     @objc func validateLogin() {
@@ -71,6 +107,9 @@ class MenuViewController: UIViewController {
         let loggedIn = defaults.bool(forKey: defaultsKeys.loggedIn)
         if loggedIn {
             bringNewValuesFromWS()
+            
+            setTimerForLocation()
+            showButtons(true)
         } else {
             if let verificationCode = defaults.string(forKey: defaultsKeys.verificationCode) {
                 print("Este es el código que ya se tiene: \(verificationCode)")
@@ -93,10 +132,15 @@ class MenuViewController: UIViewController {
         }
     }
     
+    func showButtons(_ show: Bool) {
+        self.qrButton.isHidden = !show
+        self.registrarButton.isHidden = !show
+        self.cambiarPinButton.isHidden = !show
+    }
+    
     func bringNewValuesFromWS() {
         let clientSOAP = SoapClient()
         let clientSQL = SQLiteClient()
-        
         
         // Obtiene la empresa del WS
         clientSOAP.getEmpresa(idEmpresa: defaults.integer(forKey: defaultsKeys.empresa), completion: {(empresa: Empresa?, error: String?) in

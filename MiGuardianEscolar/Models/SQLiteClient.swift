@@ -308,7 +308,10 @@ class SQLiteClient {
         }
     }
     
-    func addEntidad(entidad: Entidad) {
+    func addEntidad(entidad: Entidad) -> Int {
+        
+        var idEntidad = entidad.idEntidad
+        
         if let entidades = self.getEntidad(idEntidad: entidad.idEntidad) {
             if entidades.count > 0 {
                 do {
@@ -325,7 +328,7 @@ class SQLiteClient {
                 }
             } else {
                 do {
-                    try db?.insertInto(
+                    let idEntidad64 = try db?.insertInto(
                         "Entidades",
                         values: [
                             "nombre": entidad.nombre,
@@ -334,11 +337,15 @@ class SQLiteClient {
                             "imagen": entidad.imagen
                         ]
                     )
+                    
+                    idEntidad = Int(idEntidad64!)
                 } catch {
                     print("Error \(error)")
                 }
             }
         }
+        
+        return idEntidad
     }
 }
 

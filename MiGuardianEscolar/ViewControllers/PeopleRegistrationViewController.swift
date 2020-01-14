@@ -23,18 +23,33 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        prepareView()
+        
         peopleTable.dataSource = self
         peopleTable.delegate = self
+        
+        updateTableData()
+    }
+    
+    func prepareView() {
         peopleTable.separatorStyle = .singleLine
         peopleTable.tableFooterView = UIView()
         
-//        let plusImage = UIImage(named: "plus").withRenderingMode(.alwaysTemplate)
+        name.keyboardType = UIKeyboardType.namePhonePad
+        phone.keyboardType = UIKeyboardType.phonePad
+        email.keyboardType = UIKeyboardType.emailAddress
+        
+        personPhoto.layer.cornerRadius = 5
+        personPhoto.layer.borderWidth = 3.0
+        personPhoto.layer.borderColor = UIColor(red: 0.3, green: 0.8039, blue: 0.9843, alpha: 1).cgColor
+        
+        let plusImage = UIImage(named: "save")!.withRenderingMode(.alwaysTemplate)
         let button = MDCFloatingButton(frame: CGRect(x: self.view.frame.size.width / 2 - 25, y: 300, width: 50, height: 50))
         button.titleLabel?.text = "+"
+        button.setImage(plusImage, for: .normal)
         button.addTarget(self, action: #selector(saveClick), for: .touchUpInside)
         self.view.addSubview(button)
 
-        updateTableData()
     }
     
     func updateTableData() {
@@ -45,9 +60,9 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     
     @objc func saveClick() {
         if validations() {
-            let entidad = createEntidad()
+            var entidad = createEntidad()
             
-            addToSQLite(entidad: entidad)
+            entidad.idEntidad = addToSQLite(entidad: entidad)
             
             addToSOAPService(entidad: entidad)
         }
@@ -89,7 +104,9 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         let soapClient = SoapClient()
         
         soapClient.sendUpdatePhoto(entidad: entidad, completion: {(result: String?, error: String?) in
-            print("Error al guardar la foto")
+            if error != nil {
+                print("Error al guardar la foto")
+            }
         })
     }
     
@@ -111,10 +128,11 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         })
     }
     
-    func addToSQLite(entidad: Entidad) {
+    func addToSQLite(entidad: Entidad) -> Int {
         let clientSQL = SQLiteClient()
         
-        clientSQL.addEntidad(entidad: entidad)
+        // Regresa el nuevo IdEntidad
+        return clientSQL.addEntidad(entidad: entidad)
     }
     
     func createEntidad() -> Entidad {
@@ -136,6 +154,7 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         email.text = ""
         selectedIdEntidad = 0
         personPhoto.image = nil
+        name.becomeFirstResponder()
     }
     
     func validations() -> Bool {
@@ -224,10 +243,53 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
-        if let image = info[.originalImage] as? UIImage {
+        if var image = info[.originalImage] as? UIImage {
+            image = image.resizeImage(600, opaque: true)
             self.personPhoto.image = image
         }
         
         dismiss(animated: true)
+    }
+}
+
+extension UIImage {
+    func resizeImage(_ dimension: CGFloat, opaque: Bool, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImage {
+        var width: CGFloat
+        var height: CGFloat
+        var newImage: UIImage
+
+        let size = self.size
+        let aspectRatio =  size.width/size.height
+
+        switch contentMode {
+            case .scaleAspectFit:
+                if aspectRatio > 1 {                            // Landscape image
+                    width = dimension
+                    height = dimension / aspectRatio
+                } else {                                        // Portrait image
+                    height = dimension
+                    width = dimension * aspectRatio
+                }
+
+        default:
+            fatalError("UIIMage.resizeToFit(): FATAL: Unimplemented ContentMode")
+        }
+
+        if #available(iOS 10.0, *) {
+            let renderFormat = UIGraphicsImageRendererFormat.default()
+            renderFormat.opaque = opaque
+            let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height), format: renderFormat)
+            newImage = renderer.image {
+                (context) in
+                self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+            }
+        } else {
+            UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), opaque, 0)
+                self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
+                newImage = UIGraphicsGetImageFromCurrentImageContext()!
+            UIGraphicsEndImageContext()
+        }
+
+        return newImage
     }
 }

@@ -13,11 +13,12 @@ class QRCreatorViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy/MM/dd HH:mm:ss"
+        let stringForQR = formatter.string(from: Date())
 
-        let defaults = UserDefaults.standard
-        if let stringForQR = defaults.string(forKey: defaultsKeys.stringForQR) {
-            qrImage.image = generateQRCode(from: stringForQR)
-        }
+        qrImage.image = generateQRCode(from: stringForQR)
     }
     
     func generateQRCode(from string: String) -> UIImage? {

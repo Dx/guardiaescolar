@@ -10,7 +10,7 @@ import Foundation
 import Squeal
 
 struct Entidad {
-    let idEntidad: Int
+    var idEntidad: Int
     let nombre: String
     let telefono: String
     let email: String
