@@ -43,8 +43,6 @@
 	<string>Se utilizará la posición para encontrar si está dentro de la geocerca definida</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Se utilizará la posición para encontrar si está dentro de la geocerca definida</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Se utilizará la posición para encontrar si está dentro de la geocerca definida</string>
 	<key>UIApplicationSceneManifest</key>
 	<dict>
 		<key>UIApplicationSupportsMultipleScenes</key>

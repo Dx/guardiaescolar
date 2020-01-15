@@ -9,10 +9,11 @@
 import Foundation
 import Squeal
 
-struct Horario {
+class Horario {
     let idHorario: Int
     let dias: String // 12345
     let hora: String // 17:25
+    var state = 0 // 0 es Esperando horario, 1 es Ya pasó el horario, 2 Ya estoy esperando, 3 es Ya lo reporté
     
     init(row: Statement) throws {
         idHorario = row.intValue("idHorario") ?? 0
@@ -66,8 +67,13 @@ struct Horario {
         let difference = currentDate.timeIntervalSince(givenDate) / 60
         
         // Revisa si la diferencia es menor a la tolerancia
-        if difference < Double(tolerance) {
+        if abs(difference) < Double(tolerance) {
             result = true
+        } else {
+            if difference > 0 {
+                // Este horario ya pasó
+                state = 1
+            }
         }
         
         return result

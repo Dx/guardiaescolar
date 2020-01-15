@@ -31,6 +31,7 @@ class SoapClient {
             
             if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:validaIOSResponse"]["return"].element?.text {
                 if response == "A1A2" {
+                    print("Envió nuevo código!")
                     completion(response, nil)
                 } else {
                     completion(nil, "Código inválido, reintente")
@@ -117,6 +118,13 @@ class SoapClient {
                 }
             }
             
+            // Para pruebas
+//            let horario = Horario(idHorario: 22, dias: "12345", hora: "18:00")
+//            horarios.append(horario)
+            
+            let horario2 = Horario(idHorario: 23, dias: "12345", hora: "23:00")
+            horarios.append(horario2)
+            
             completion(horarios, nil)
         })
         task.resume()
@@ -143,6 +151,7 @@ class SoapClient {
             
             if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:insEntIOSResponse"]["return"].element?.text {
                 if response == "1" {
+                    print("Envió nueva entidad!")
                     completion(response, nil)
                 } else {
                     completion(nil, "No fue posible guardar")
@@ -173,6 +182,7 @@ class SoapClient {
             
             if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:actEntIOSResponse"]["return"].element?.text {
                 if response == "1" {
+                    print("Actualizó entidad!")
                     completion(response, nil)
                 } else {
                     completion(nil, "No fue posible guardar")
@@ -203,6 +213,7 @@ class SoapClient {
             
             if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:actFotoEntIOSResponse"]["return"].element?.text {
                 if response == "1" {
+                    print("Subió foto!")
                     completion(response, nil)
                 } else {
                     completion(nil, "No fue posible guardar")
@@ -225,17 +236,19 @@ class SoapClient {
         lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
 
         let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
-            
-            let xml = SWXMLHash.config {
-                config in
-                config.shouldProcessLazily = true
-            }.parse(data!)
-            
-            if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:actFotoEntIOSResponse"]["return"].element?.text {
-                if response == "1" {
-                    completion("1", nil)
-                } else {
-                    completion(nil, "No fue posible guardar")
+            if data != nil {
+                let xml = SWXMLHash.config {
+                    config in
+                    config.shouldProcessLazily = true
+                }.parse(data!)
+                
+                if let response = xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:acercaIOSResponse"]["return"].element?.text {
+                    if response != "0" {
+                        print("Reportando que está en posición!")
+                        completion("1", nil)
+                    } else {
+                        completion(nil, "No fue posible guardar")
+                    }
                 }
             }
         })

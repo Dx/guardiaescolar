@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Variables de la aplicación
         let defaults = UserDefaults.standard
         defaults.set(1, forKey: defaultsKeys.empresa)
+        defaults.set(5, forKey: defaultsKeys.timeInterval)
         
         let client = SQLiteClient()
         client.createTables()
@@ -51,6 +52,7 @@ struct defaultsKeys {
     static let latitudEmpresa = "latitudEmpresa"
     static let longitudEmpresa = "longitudEmpresa"
     static let metrosEmpresa = "metrosEmpresa"
+    static let timeInterval = "timeInterval"
 }
 
 extension Notification.Name {
