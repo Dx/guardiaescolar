@@ -15,13 +15,19 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
     @IBOutlet weak var registrarButton: UIButton!
     @IBOutlet weak var cambiarPinButton: UIButton!
     
-    var backgroundTaskIdentifier: UIBackgroundTaskIdentifier?
-    
     var empresaRegion: CLCircularRegion?
     let defaults = UserDefaults.standard
     var horarios: [Horario]?
-    var locationManager: CLLocationManager!
     var currentHorario = 0
+    
+    private lazy var locationManager: CLLocationManager = {
+        let manager = CLLocationManager()
+        manager.desiredAccuracy = kCLLocationAccuracyBest
+        manager.delegate = self
+        manager.requestAlwaysAuthorization()
+        manager.allowsBackgroundLocationUpdates = true
+        return manager
+    }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,32 +35,53 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
         NotificationCenter.default.addObserver(self, selector: #selector(validateLogin), name: .needsToValidateLogin, object: nil)
         
         showButtons(false)
-        configureLocationManager()
         defaults.set(false, forKey: defaultsKeys.loggedIn)
         
         validateLogin()
-        
     }
     
-    func configureLocationManager() {
-        locationManager = CLLocationManager()
-        locationManager.delegate = self
-        locationManager.desiredAccuracy = kCLLocationAccuracyBest
-        locationManager.requestAlwaysAuthorization()
+    func startLocating() {
+        // Crea la región por monitorear
+        empresaRegion = createRegion(latitud: defaults.double(forKey: defaultsKeys.latitudEmpresa), longitud: defaults.double(forKey: defaultsKeys.longitudEmpresa))
+        
+        locationManager.startUpdatingLocation()
     }
     
-    func setTimerForLocation() {
+    func createRegion(latitud: Double, longitud: Double) -> CLCircularRegion {
+        let center = CLLocationCoordinate2D(latitude: latitud, longitude: longitud)
+        let maxDistance = CLLocationDistance(exactly: defaults.integer(forKey: defaultsKeys.metrosEmpresa))!
+        let region = CLCircularRegion(center: center, radius: maxDistance, identifier: "Empresa")
         
-        let timeInterval = defaults.double(forKey: defaultsKeys.timeInterval)
+        region.notifyOnEntry = true
         
-        backgroundTaskIdentifier = UIApplication.shared.beginBackgroundTask(expirationHandler: {
-           UIApplication.shared.endBackgroundTask(self.backgroundTaskIdentifier!)
-        })
+        locationManager.startMonitoring(for: region)
         
-        let timer = Timer.scheduledTimer(timeInterval: timeInterval, target: self, selector: #selector(self.checkLocation), userInfo: nil, repeats: true)
-        timer.tolerance = 0.2
+        return region
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didDetermineState state: CLRegionState, for region: CLRegion) {
+        print("already here")
+        checkSchedule()
+    }
+    
+    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         
-        RunLoop.current.add(timer, forMode: .common)
+        guard let mostRecentLocation = locations.last else {
+            return
+        }
+        
+        if UIApplication.shared.applicationState == .active {
+            print("App is active. New location is %@", mostRecentLocation)
+        } else {
+            print("App is backgrounded. New location is %@", mostRecentLocation)
+        }
+        
+        // Revisa si es una posición buscada
+        let currentLocation = mostRecentLocation.coordinate
+        
+        if empresaRegion!.contains(currentLocation) {
+            checkSchedule()
+        }
     }
     
     func getHorarios() {
@@ -65,12 +92,7 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
-    @objc func checkLocation() {
-        print("Check location")
-        
-        // Crea la región por monitorear
-        empresaRegion = createRegion(latitud: defaults.double(forKey: defaultsKeys.latitudEmpresa), longitud: defaults.double(forKey: defaultsKeys.longitudEmpresa))
-        
+    func checkSchedule() {
         // Revisa si está en horario
         let currentDate = Date()
         if horarios != nil {
@@ -83,8 +105,18 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
                     if horario.isInSchedule(currentDate, tolerance: defaults.integer(forKey: defaultsKeys.minutosTolerancia)) {
                         currentHorario = horario.idHorario
                         
-                        // Si cumple con el horario, se activa localización
-                        activateLocation()
+                        // Se reporta al WS
+                        let soapClient = SoapClient()
+                        soapClient.reportOnGeofence(completion:{(result: String?, error: String?) in
+                            if error == nil {
+                                // Detiene el monitoreo
+                                self.locationManager.stopUpdatingLocation()
+                                
+                                // Cambia estado del horario a revisado
+                                let myIndex = self.horarios!.firstIndex(where: { $0.idHorario == self.currentHorario })!
+                                self.horarios![myIndex].state = 3
+                            }
+                        })
                         
                         // El horario actual lo cambia a estado 1, que ya está localizando. Los demás los deja en 0, que se pueden revisar
                         let myIndex = horarios!.firstIndex(where: { $0.idHorario == currentHorario })!
@@ -101,47 +133,6 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
             }
         }
     }
-    
-    func activateLocation() {
-        if (CLLocationManager.locationServicesEnabled()) {
-            locationManager = CLLocationManager()
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
-            locationManager.requestAlwaysAuthorization()
-            locationManager.startUpdatingLocation()
-        }
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation])
-    {
-        if empresaRegion != nil {
-            let location = locations.last! as CLLocation
-
-            let currentLocation = CLLocationCoordinate2D(latitude: location.coordinate.latitude, longitude: location.coordinate.longitude)
-            
-            if empresaRegion!.contains(currentLocation) {
-                // Se reporta al WS
-                let soapClient = SoapClient()
-                soapClient.reportOnGeofence(completion:{(result: String?, error: String?) in
-                    if error == nil {
-                        // Detiene el monitoreo
-                        self.locationManager.stopUpdatingLocation()
-                        
-                        // Cambia estado del horario a revisado
-                        let myIndex = self.horarios!.firstIndex(where: { $0.idHorario == self.currentHorario })!
-                        self.horarios![myIndex].state = 3
-                    }
-                })
-            }
-        }
-    }
-    
-    func createRegion(latitud: Double, longitud: Double) -> CLCircularRegion {
-        let center = CLLocationCoordinate2D(latitude: latitud, longitude: longitud)
-        let maxDistance = CLLocationDistance(exactly: defaults.integer(forKey: defaultsKeys.metrosEmpresa))!
-        let region = CLCircularRegion(center: center, radius: maxDistance, identifier: "Empresa")
-        return region
-    }
         
     @objc func validateLogin() {
         
@@ -150,7 +141,7 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
         if loggedIn {
             bringNewValuesFromWS()
             getHorarios()
-            setTimerForLocation()
+            startLocating()
             showButtons(true)
         } else {
             if let verificationCode = defaults.string(forKey: defaultsKeys.verificationCode) {

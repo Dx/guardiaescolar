@@ -62,27 +62,29 @@ class SoapClient {
 
         let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
             
-            let xml = SWXMLHash.config {
-                config in
-                config.shouldProcessLazily = true
-            }.parse(data!)
-            
-            for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaEmpresaIOSResponse"]["return"]["item"].all {                
+            if data != nil {
+                let xml = SWXMLHash.config {
+                    config in
+                    config.shouldProcessLazily = true
+                }.parse(data!)
                 
-                let idEmpresa = Int(item["nEmp"].element!.text)!
-                let nombre = item["nombre"].element!.text
-                var imagen = item["imagen"].element!.text
-                
-                // quitando los saltos de línea
-                imagen = String(imagen.filter { !" \n".contains($0) })
-                let latitud = Double(item["latitud"].element!.text)!
-                let longitud = Double(item["longitud"].element!.text)!
-                let metros = Int(item["metros"].element!.text)!
-                let minutos = Int(item["minutos"].element!.text)!
-                let empresa = Empresa(idEmpresa: idEmpresa, nombre: nombre, imagen: imagen, latitud: latitud, longitud: longitud, metros: metros, minutos: minutos)
-                
-                completion(empresa, nil)
-            }
+                for item in xml["SOAP-ENV:Envelope"]["SOAP-ENV:Body"]["ns1:dameTablaEmpresaIOSResponse"]["return"]["item"].all {
+                    
+                    let idEmpresa = Int(item["nEmp"].element!.text)!
+                    let nombre = item["nombre"].element!.text
+                    var imagen = item["imagen"].element!.text
+                    
+                    // quitando los saltos de línea
+                    imagen = String(imagen.filter { !" \n".contains($0) })
+                    let latitud = Double(item["latitud"].element!.text)!
+                    let longitud = Double(item["longitud"].element!.text)!
+                    let metros = Int(item["metros"].element!.text)!
+                    let minutos = Int(item["minutos"].element!.text)!
+                    let empresa = Empresa(idEmpresa: idEmpresa, nombre: nombre, imagen: imagen, latitud: latitud, longitud: longitud, metros: metros, minutos: minutos)
+                    
+                    completion(empresa, nil)
+                }
+            }            
         })
         task.resume()
     }
