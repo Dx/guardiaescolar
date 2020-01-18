@@ -11,6 +11,8 @@ import MaterialComponents.MaterialButtons
 
 class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
+    //MARK:- Properties
+    
     @IBOutlet weak var peopleTable: UITableView!
     @IBOutlet weak var name: UITextField!
     @IBOutlet weak var phone: UITextField!
@@ -19,6 +21,8 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
     
     var people: [Entidad]?
     var selectedIdEntidad = 0
+    
+    //MARK:- View methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,12 +56,6 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
 
     }
     
-    func updateTableData() {
-        let clientSQL = SQLiteClient()
-        self.people = clientSQL.getEntidades()
-        peopleTable.reloadData()
-    }
-    
     @objc func saveClick() {
         if validations() {
             var entidad = createEntidad()
@@ -69,6 +67,30 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         
         self.updateTableData()
         self.cleanFields()
+    }
+    
+    @IBAction func takePhotoClick(_ sender: Any) {
+        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
+        
+        actionSheet.addAction(UIAlertAction(title: "Cámara", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            self.camera()
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Galería de fotos", style: .default, handler: { (alert:UIAlertAction!) -> Void in
+            self.photoLibrary()
+        }))
+        
+        actionSheet.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
+        
+        present(actionSheet, animated: true, completion: nil)
+    }
+    
+    //MARK:- Methods
+    
+    func updateTableData() {
+        let clientSQL = SQLiteClient()
+        self.people = clientSQL.getEntidades()
+        peopleTable.reloadData()
     }
     
     func addToSOAPService(entidad: Entidad) {
@@ -173,6 +195,8 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         return result
     }
     
+    //MARK:- Table view delegate
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         var result = 0
         if people != nil {
@@ -203,8 +227,9 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         personPhoto.image = tools.base64ToImage(entidad.imagen)
     }
     
-    func photoLibrary()
-    {
+    //MARK:- Photo methods
+    
+    func photoLibrary() {
         if UIImagePickerController.isSourceTypeAvailable(.photoLibrary){
             let picker = UIImagePickerController()
             picker.allowsEditing = true
@@ -213,8 +238,7 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         }
     }
     
-    func camera()
-    {
+    func camera() {
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
             let imagePicker = UIImagePickerController()
             imagePicker.delegate = self
@@ -225,22 +249,6 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         }
     }
     
-    @IBAction func takePhotoClick(_ sender: Any) {
-        let actionSheet = UIAlertController(title: nil, message: nil, preferredStyle: .actionSheet)
-        
-        actionSheet.addAction(UIAlertAction(title: "Cámara", style: .default, handler: { (alert:UIAlertAction!) -> Void in
-            self.camera()
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Galería de fotos", style: .default, handler: { (alert:UIAlertAction!) -> Void in
-            self.photoLibrary()
-        }))
-        
-        actionSheet.addAction(UIAlertAction(title: "Cancelar", style: .cancel, handler: nil))
-        
-        present(actionSheet, animated: true, completion: nil)
-    }
-    
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
         
         if var image = info[.originalImage] as? UIImage {
@@ -249,47 +257,5 @@ class PeopleRegistrationViewController: UIViewController, UITableViewDelegate, U
         }
         
         dismiss(animated: true)
-    }
-}
-
-extension UIImage {
-    func resizeImage(_ dimension: CGFloat, opaque: Bool, contentMode: UIView.ContentMode = .scaleAspectFit) -> UIImage {
-        var width: CGFloat
-        var height: CGFloat
-        var newImage: UIImage
-
-        let size = self.size
-        let aspectRatio =  size.width/size.height
-
-        switch contentMode {
-            case .scaleAspectFit:
-                if aspectRatio > 1 {                            // Landscape image
-                    width = dimension
-                    height = dimension / aspectRatio
-                } else {                                        // Portrait image
-                    height = dimension
-                    width = dimension * aspectRatio
-                }
-
-        default:
-            fatalError("UIIMage.resizeToFit(): FATAL: Unimplemented ContentMode")
-        }
-
-        if #available(iOS 10.0, *) {
-            let renderFormat = UIGraphicsImageRendererFormat.default()
-            renderFormat.opaque = opaque
-            let renderer = UIGraphicsImageRenderer(size: CGSize(width: width, height: height), format: renderFormat)
-            newImage = renderer.image {
-                (context) in
-                self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
-            }
-        } else {
-            UIGraphicsBeginImageContextWithOptions(CGSize(width: width, height: height), opaque, 0)
-                self.draw(in: CGRect(x: 0, y: 0, width: width, height: height))
-                newImage = UIGraphicsGetImageFromCurrentImageContext()!
-            UIGraphicsEndImageContext()
-        }
-
-        return newImage
     }
 }

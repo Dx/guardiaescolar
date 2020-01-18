@@ -9,7 +9,12 @@
 import UIKit
 
 class QRCreatorViewController: UIViewController {
+    
+    //MARK:- Properties
+    
     @IBOutlet weak var qrImage: UIImageView!
+    
+    //MARK:- View methods
     
     override func viewDidLoad() {
         super.viewDidLoad()

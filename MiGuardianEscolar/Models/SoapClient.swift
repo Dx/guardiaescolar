@@ -12,17 +12,13 @@ import SWXMLHash
 class SoapClient {
     
     func sendCode(code: String, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:validaIOS><hs:codigo>\(code)</hs:codigo></hs:validaIOS></soapenv:Body></soapenv:Envelope>"
-        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
-
-        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let httpBody: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:validaIOS><hs:codigo>\(code)</hs:codigo></hs:validaIOS></soapenv:Body></soapenv:Envelope>"
+        
         let session = URLSession.shared
+        
+        let request = getRequest(httpBody)
 
-        lobj_Request.httpMethod = "POST"
-        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
-        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-
-        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             
             let xml = SWXMLHash.config {
                 config in
@@ -50,17 +46,13 @@ class SoapClient {
     
     func getEmpresa(idEmpresa: Int, completion:@escaping (_ result: Empresa?, _ error: String?) -> Void) {
         // Método dameTablaEmpresaIOS
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:dameTablaEmpresaIOS><hs:idEmpresa>\(idEmpresa)</hs:idEmpresa></hs:dameTablaEmpresaIOS></soapenv:Body></soapenv:Envelope>"
-        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
-
-        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let httpBody: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:dameTablaEmpresaIOS><hs:idEmpresa>\(idEmpresa)</hs:idEmpresa></hs:dameTablaEmpresaIOS></soapenv:Body></soapenv:Envelope>"
+        
         let session = URLSession.shared
+        
+        let request = getRequest(httpBody)
 
-        lobj_Request.httpMethod = "POST"
-        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
-        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-
-        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             
             if data != nil {
                 let xml = SWXMLHash.config {
@@ -91,17 +83,13 @@ class SoapClient {
     
     func getHorarios(code: String, completion:@escaping (_ result: [Horario]?, _ error: String?) -> Void) {
         // Método dameTablaHorariosIOS
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:dameTablaHorariosIOS><hs:codigo>\(code)</hs:codigo></hs:dameTablaHorariosIOS></soapenv:Body></soapenv:Envelope>"
-        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
-
-        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let httpBody: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:dameTablaHorariosIOS><hs:codigo>\(code)</hs:codigo></hs:dameTablaHorariosIOS></soapenv:Body></soapenv:Envelope>"
+        
         let session = URLSession.shared
+        
+        let request = getRequest(httpBody)
 
-        lobj_Request.httpMethod = "POST"
-        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
-        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-
-        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             
             let xml = SWXMLHash.config {
                 config in
@@ -121,9 +109,6 @@ class SoapClient {
             }
             
             // Para pruebas
-//            let horario = Horario(idHorario: 22, dias: "12345", hora: "18:00")
-//            horarios.append(horario)
-            
             let horario2 = Horario(idHorario: 23, dias: "12345", hora: "23:00")
             horarios.append(horario2)
             
@@ -134,17 +119,13 @@ class SoapClient {
     
     func sendNewEntity(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
                 
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:insEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(getCurrentDate())</date></hs:insEntIOS></soapenv:Body></soapenv:Envelope>"
-        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
-
-        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let httpBody: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:insEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(getCurrentDate())</date></hs:insEntIOS></soapenv:Body></soapenv:Envelope>"
+        
         let session = URLSession.shared
+        
+        let request = getRequest(httpBody)
 
-        lobj_Request.httpMethod = "POST"
-        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
-        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-
-        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             
             let xml = SWXMLHash.config {
                 config in
@@ -165,17 +146,13 @@ class SoapClient {
     
     func sendUpdateEntity(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
         
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(getCurrentDate())</date></hs:actEntIOS></soapenv:Body></soapenv:Envelope>"
-        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
-
-        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let httpBody: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actEntIOS><ne>\(entidad.idEntidad)</ne><name>\(entidad.nombre)</name><date>\(getCurrentDate())</date></hs:actEntIOS></soapenv:Body></soapenv:Envelope>"
+        
         let session = URLSession.shared
+        
+        let request = getRequest(httpBody)
 
-        lobj_Request.httpMethod = "POST"
-        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
-        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-
-        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             
             let xml = SWXMLHash.config {
                 config in
@@ -196,17 +173,13 @@ class SoapClient {
     
     func sendUpdatePhoto(entidad: Entidad, completion:@escaping (_ result: String?, _ error: String?) -> Void) {
         
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actFotoEntIOS><ne>\(entidad.idEntidad)</ne><foto>\(entidad.imagen)</foto></hs:actFotoEntIOS></soapenv:Body></soapenv:Envelope>"
-        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
+        let httpBody: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:actFotoEntIOS><ne>\(entidad.idEntidad)</ne><foto>\(entidad.imagen)</foto></hs:actFotoEntIOS></soapenv:Body></soapenv:Envelope>"
 
-        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
         let session = URLSession.shared
+        
+        let request = getRequest(httpBody)
 
-        lobj_Request.httpMethod = "POST"
-        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
-        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-
-        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             
             let xml = SWXMLHash.config {
                 config in
@@ -227,17 +200,13 @@ class SoapClient {
     
     func reportOnGeofence(completion:@escaping (_ result: String?, _ error: String?) -> Void){
         
-        let is_SoapMessage: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:acercaIOS><date>\(getCurrentDate())</date></hs:acercaIOS></soapenv:Body></soapenv:Envelope>"
-        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
-
-        let lobj_Request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        let httpBody: String = "<soapenv:Envelope xmlns:soapenv='http://schemas.xmlsoap.org/soap/envelope/' xmlns:hs='http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php'><soapenv:Body><hs:acercaIOS><date>\(getCurrentDate())</date></hs:acercaIOS></soapenv:Body></soapenv:Envelope>"
+        
         let session = URLSession.shared
-
-        lobj_Request.httpMethod = "POST"
-        lobj_Request.httpBody = is_SoapMessage.data(using: String.Encoding.utf8)
-        lobj_Request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
-
-        let task = session.dataTask(with: lobj_Request as URLRequest, completionHandler: {data, response, error -> Void in
+        
+        let request = getRequest(httpBody)
+        
+        let task = session.dataTask(with: request as URLRequest, completionHandler: {data, response, error -> Void in
             if data != nil {
                 let xml = SWXMLHash.config {
                     config in
@@ -255,6 +224,17 @@ class SoapClient {
             }
         })
         task.resume()
+    }
+    
+    func getRequest(_ httpBody: String) -> NSMutableURLRequest {
+        let is_URL: String = "http://heimtek.mx/miguardianescolar/mgeIOS_Service_bp.php"
+        let request = NSMutableURLRequest.init(url: URL(string: is_URL)!)
+        
+        request.httpMethod = "POST"
+        request.httpBody = httpBody.data(using: String.Encoding.utf8)
+        request.addValue("text/xml; charset=utf-8", forHTTPHeaderField: "Content-Type")
+        
+        return request
     }
     
     func getCurrentDate() -> String {

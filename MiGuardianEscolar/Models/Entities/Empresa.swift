@@ -18,8 +18,6 @@ struct Empresa {
     let metros: Int
     let minutos: Int
     
-    
-    
     init(row: Statement) throws {
         idEmpresa = row.intValue("idEmpresa") ?? 0
         nombre = row.stringValue("nombre") ?? ""

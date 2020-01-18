@@ -9,8 +9,13 @@
 import UIKit
 
 class ChangePinViewController: UIViewController {
+    
+    //MARK:- Properties
+    
     @IBOutlet weak var firstNip: UITextField!
     @IBOutlet weak var secondNip: UITextField!
+    
+    //MARK:- View methods
     
     override func viewDidLoad() {
         super.viewDidLoad()

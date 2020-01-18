@@ -11,7 +11,11 @@ import Squeal
 
 class SQLiteClient {
     
+    //MARK:- Properties
+    
     let db: Database?
+    
+    //MARK:- Initializer
     
     init(){
         do {
@@ -26,7 +30,7 @@ class SQLiteClient {
         }
     }
     
-    
+    //MARK:- Create tables
     
     func createTables() {
         
@@ -36,6 +40,8 @@ class SQLiteClient {
         createHorarios()
         createCodigos()
     }
+    
+    
     
     func createEmpresas() {
         do {
@@ -100,6 +106,8 @@ class SQLiteClient {
             print("Error \(error)")
         }
     }
+    
+    //MARK:- Empresa methods
     
     func addEmpresa(empresa: Empresa) {
         
@@ -172,6 +180,8 @@ class SQLiteClient {
         }
     }
     
+    //MARK:- Codigo methods
+    
     func addCodigo(codigo: String, nip: String) {
         
         if let codigos = self.getCodigo(codigo: codigo) {
@@ -212,6 +222,8 @@ class SQLiteClient {
             return nil
         }
     }
+    
+    //MARK:- Horario methods
     
     func addHorario(horario: Horario) {
         
@@ -275,6 +287,8 @@ class SQLiteClient {
             return nil
         }
     }
+    
+    //MARK:- Entidad methods
     
     func getEntidad(idEntidad: Int) -> [Entidad]? {
         do {

@@ -9,9 +9,13 @@
 import UIKit
 
 class UserCodeViewController: UIViewController {
+    
+    //MARK:- Properties
 
     @IBOutlet weak var verificationCode: UITextField!
     @IBOutlet weak var labelError: UILabel!
+    
+    //MARK:- View methods
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -55,6 +59,8 @@ class UserCodeViewController: UIViewController {
             })
         }
     }
+    
+    //MARK:- Methods
     
     func validations() -> Bool {
         var result = false
