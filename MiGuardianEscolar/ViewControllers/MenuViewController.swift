@@ -26,7 +26,7 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
     
     private lazy var locationManager: CLLocationManager = {
         let manager = CLLocationManager()
-        manager.desiredAccuracy = kCLLocationAccuracyHundredMeters
+        manager.desiredAccuracy = kCLLocationAccuracyBest
         manager.delegate = self
         manager.requestAlwaysAuthorization()
         manager.allowsBackgroundLocationUpdates = true
