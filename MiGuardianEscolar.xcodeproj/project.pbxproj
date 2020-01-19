@@ -102,7 +102,6 @@
 		E159E85323C7729700E96812 /* MiGuardianEscolar */ = {
 			isa = PBXGroup;
 			children = (
-				E15985BC23D27C650071BD08 /* Extensions */,
 				E159E86223C7729B00E96812 /* Info.plist */,
 				E159E85423C7729700E96812 /* AppDelegate.swift */,
 				E159E85623C7729800E96812 /* SceneDelegate.swift */,
@@ -110,6 +109,7 @@
 				E159E86A23C773D800E96812 /* Views */,
 				E159E86823C773C000E96812 /* ViewControllers */,
 				E159E86923C773D000E96812 /* Models */,
+				E15985BC23D27C650071BD08 /* Extensions */,
 				E1A8E03623C94CE10004FB78 /* Tools.swift */,
 			);
 			path = MiGuardianEscolar;

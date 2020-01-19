@@ -41,8 +41,6 @@ class SQLiteClient {
         createCodigos()
     }
     
-    
-    
     func createEmpresas() {
         do {
             try db!.createTable("Empresa", definitions: [

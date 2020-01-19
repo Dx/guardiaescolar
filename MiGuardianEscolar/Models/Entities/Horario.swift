@@ -10,10 +10,15 @@ import Foundation
 import Squeal
 
 class Horario {
+    
+    //MARK:- Properties
+    
     let idHorario: Int
     let dias: String // 12345
     let hora: String // 17:25
     var state = 0 // 0 es Esperando horario, 1 es Ya pasó el horario, 2 Ya estoy esperando, 3 es Ya lo reporté
+    
+    //MARK:- Initializers
     
     init(row: Statement) throws {
         idHorario = row.intValue("idHorario") ?? 0
@@ -26,6 +31,8 @@ class Horario {
         self.dias = dias
         self.hora = hora
     }
+    
+    //MARK:- Methods
     
     func isInSchedule(_ currentDate: Date, tolerance: Int) -> Bool {
         var result = false

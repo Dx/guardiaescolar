@@ -109,8 +109,8 @@ class SoapClient {
             }
             
             // Para pruebas
-//            let horario2 = Horario(idHorario: 23, dias: "12345", hora: "23:00")
-//            horarios.append(horario2)
+            let horario2 = Horario(idHorario: 24, dias: "123456", hora: "22:30")
+            horarios.append(horario2)
             
             completion(horarios, nil)
         })

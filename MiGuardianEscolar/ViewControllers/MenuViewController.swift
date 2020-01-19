@@ -44,14 +44,6 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
         // Crea la región por monitorear
         empresaRegion = createRegion(latitud: defaults.double(forKey: defaultsKeys.latitudEmpresa), longitud: defaults.double(forKey: defaultsKeys.longitudEmpresa))
         
-        // Scheduler para cuando ya entra en geocerca y horario, para revisar en 30 segundos.
-//        BGTaskScheduler.shared.register(
-//            forTaskWithIdentifier: "scheduleStillOnGeofence",
-//            using: DispatchQueue.global()
-//        ) { task in
-//            self.handleAppRefreshTask(task: task as! BGProcessingTask)
-//        }
-        
         showButtons(false)
         defaults.set(false, forKey: defaultsKeys.loggedIn)
         
@@ -108,6 +100,13 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
             print("App is backgrounded. New location received at \(Date().description(with: .current))")
         }
         
+        // Si la hora es mayor a 1159 pm, reinicia horarios a cero
+        if isHourPast(hourAsked: 11, minuteAsked: 59) && horarios != nil {
+            for horario in horarios! {
+                horario.state = 0
+            }
+        }
+        
         // Revisa si está dentro de la geocerca
         if let currentLocation = locations.last {
             if empresaRegion!.contains(currentLocation.coordinate) {
@@ -116,10 +115,22 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
         }
     }
     
+    func isHourPast(hourAsked: Int, minuteAsked: Int) -> Bool {
+        // Revisa si el horario actual ya pasó un horario solicitado
+        let dateComponents = Calendar.current.dateComponents([.hour, .minute], from: Date())
+        let dateSeconds = dateComponents.hour! * 3600 + dateComponents.minute! * 60
+        
+        let dateSecondsAsked = hourAsked * 3600 + minuteAsked * 60
+
+        return dateSeconds >= dateSecondsAsked
+    }
+    
     func checkSchedule() {
         // Está dentro de la geocerca, entonces revisa si está en horario
         let currentDate = Date()
+        
         if horarios != nil {
+            
             for horario in horarios! {
                 if horario.state == 0 {
                     if horario.isInSchedule(currentDate, tolerance: defaults.integer(forKey: defaultsKeys.minutosTolerancia)) {
