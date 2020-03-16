@@ -22,6 +22,8 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
     var horarios: [Horario]?
     var currentHorario = 0
     
+    var passed30seconds = false
+    
     var lastLocation: CLLocation?
     
     private lazy var locationManager: CLLocationManager = {
@@ -94,23 +96,34 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
         
         lastLocation = locations.last!
         
-        if UIApplication.shared.applicationState == .active {
-            print("App is active. New location received at \(Date().description(with: .current))")
-        } else {
-            print("App is backgrounded. New location received at \(Date().description(with: .current))")
-        }
-        
-        // Si la hora es mayor a 1159 pm, reinicia horarios a cero
-        if isHourPast(hourAsked: 11, minuteAsked: 59) && horarios != nil {
-            for horario in horarios! {
-                horario.state = 0
+        if passed30seconds {
+            // Ya pasaron los 30 segundos y va a revisar si la nueva posición también está en la geocerca
+            if empresaRegion!.contains(lastLocation!.coordinate) {
+                scheduleLocalNotification()
+                reportPosition()
+                print("Ya reportó posición")
+                passed30seconds = false
             }
-        }
+        } else {
         
-        // Revisa si está dentro de la geocerca
-        if let currentLocation = locations.last {
-            if empresaRegion!.contains(currentLocation.coordinate) {
-                checkSchedule()
+            if UIApplication.shared.applicationState == .active {
+                print("App is active. New location received at \(Date().description(with: .current))")
+            } else {
+                print("App is backgrounded. New location received at \(Date().description(with: .current))")
+            }
+            
+            // Si la hora es mayor a 1159 pm, reinicia horarios a cero
+            if isHourPast(hourAsked: 11, minuteAsked: 59) && horarios != nil {
+                for horario in horarios! {
+                    horario.state = 0
+                }
+            }
+            
+            // Revisa si está dentro de la geocerca
+            if let currentLocation = locations.last {
+                if empresaRegion!.contains(currentLocation.coordinate) {
+                    checkSchedule()
+                }
             }
         }
     }
@@ -168,15 +181,10 @@ class MenuViewController: UIViewController, CLLocationManagerDelegate {
     }
     
     @objc func passed30segs() {
-        // Ya se cumplieron 30 segundos. Si continúa en el rango entonces reporta
+        // Ya se cumplieron 30 segundos. Solicita encender localización para ver si se reporta
         print("Ya pasaron 30 segundos")
-        if empresaRegion!.contains(lastLocation!.coordinate) {
-            scheduleLocalNotification()
-            reportPosition()
-            print("Ya reportó posición")
-            self.locationManager.startUpdatingLocation()
-            print("Comienza de nuevo a reportar posición")
-        }
+        passed30seconds = true
+        self.locationManager.startUpdatingLocation()
     }
     
     func reportPosition() {
